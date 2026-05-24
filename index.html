@@ -202,7 +202,7 @@ body {
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-  max-height: 400px;
+  max-height: min(640px, calc(100vh - 320px));
   scroll-behavior: smooth;
 }
 .app.has-selection .list-scroll {
