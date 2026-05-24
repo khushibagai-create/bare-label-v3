@@ -1,0 +1,2557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bare Label · Hair</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #f4f3ee;
+  --card: #ffffff;
+  --card-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03);
+  --card-shadow-lg: 0 2px 8px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.05);
+  --text: #2c2c2c;
+  --text-secondary: #6b6b6b;
+  --text-light: #9a9a9a;
+  --border: #e8e6e0;
+  --sage: #7a9a7e;
+  --sage-light: #e8f0e9;
+  --sage-bg: #f0f5f1;
+  --rose: #c4877a;
+  --rose-light: #f5ebe8;
+  --rose-bg: #faf3f1;
+  --amber: #c49a6c;
+  --amber-light: #f5ede3;
+  --green-pill: #e8f0e9;
+  --green-pill-text: #4a7a50;
+  --amber-pill: #f5ede3;
+  --amber-pill-text: #8a6a3a;
+  --serif: 'Lora', Georgia, 'Times New Roman', serif;
+  --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --radius: 12px;
+  --radius-sm: 10px;
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html { font-size: 16px; -webkit-font-smoothing: antialiased; }
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ── App Shell ── */
+.app {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Header ── */
+.header {
+  text-align: center;
+  padding: 56px 0 0;
+  transition: padding 0.4s var(--ease);
+}
+.app.has-selection .header {
+  padding: 32px 0 0;
+}
+.header h1 {
+  font-family: var(--serif);
+  font-size: 2.6rem;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  margin-bottom: 6px;
+  transition: font-size 0.4s var(--ease);
+}
+.app.has-selection .header h1 {
+  font-size: 1.8rem;
+}
+.header .subtitle {
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  font-weight: 400;
+  margin-bottom: 28px;
+  transition: all 0.4s var(--ease);
+}
+.app.has-selection .header .subtitle {
+  font-size: 0.85rem;
+  margin-bottom: 20px;
+}
+
+/* ── Tabs (text-only with underline accent) ── */
+.tabs {
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+  margin-bottom: 18px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0;
+}
+.tab {
+  font-family: var(--sans);
+  font-size: 0.88rem;
+  font-weight: 500;
+  border: none;
+  background: transparent;
+  color: var(--text-light);
+  cursor: pointer;
+  padding: 8px 2px 10px;
+  position: relative;
+  transition: color 0.25s var(--ease);
+  letter-spacing: 0.01em;
+}
+.tab:hover { color: var(--text-secondary); }
+.tab::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 2px;
+  background: transparent;
+  border-radius: 2px;
+  transition: background 0.25s var(--ease);
+}
+.tab.active { color: var(--text); }
+.tab.active[data-tab="ingredients"] { color: var(--sage); }
+.tab.active[data-tab="ingredients"]::after { background: var(--sage); }
+.tab.active[data-tab="concerns"] { color: var(--rose); }
+.tab.active[data-tab="concerns"]::after { background: var(--rose); }
+
+/* ── Grouped nav card (Option C) ── */
+.nav-card {
+  background: rgba(0,0,0,0.025);
+  border-radius: 16px;
+  padding: 6px 8px 6px;
+  margin: 0 auto 18px;
+  width: fit-content;
+  max-width: 100%;
+}
+
+/* ── Content Area ── */
+.content-area {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  padding-bottom: 60px;
+  transition: all 0.4s var(--ease);
+}
+
+/* ── List Panel ── */
+.list-panel {
+  width: 100%;
+  max-width: 560px;
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
+  transition: all 0.4s var(--ease);
+  flex-shrink: 0;
+}
+.app.has-selection .list-panel {
+  max-width: 380px;
+  min-width: 340px;
+}
+
+/* ── Search ── */
+.search-box {
+  position: relative;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.search-box svg {
+  position: absolute;
+  left: 28px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-light);
+  width: 16px;
+  height: 16px;
+  transition: color 0.25s var(--ease);
+}
+.search-box input {
+  width: 100%;
+  padding: 8px 12px 8px 32px;
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  border: none;
+  background: transparent;
+  color: var(--text);
+  outline: none;
+}
+.search-box input::placeholder { color: var(--text-light); }
+.search-box:has(input:focus) svg { color: var(--sage); }
+
+/* ── List ── */
+.list-scroll {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  max-height: 400px;
+  scroll-behavior: smooth;
+}
+.app.has-selection .list-scroll {
+  max-height: calc(100vh - 260px);
+}
+.list-scroll::-webkit-scrollbar { width: 3px; }
+.list-scroll::-webkit-scrollbar-track { background: transparent; }
+.list-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+.list-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 18px;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(0,0,0,0.04);
+  transition: background 0.15s var(--ease);
+}
+.list-item:last-child {
+  border-bottom: none;
+}
+.list-item:hover {
+  background: rgba(0,0,0,0.025);
+}
+.list-item.active {
+  background: #f0efeb;
+}
+.list-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: var(--sage);
+  opacity: 0.6;
+}
+.list-dot.concern { background: var(--rose); }
+.list-item.active .list-dot { opacity: 1; }
+.list-info { flex: 1; min-width: 0; }
+.list-name {
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.3;
+}
+.list-sub {
+  font-size: 0.78rem;
+  color: var(--text-light);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.3;
+  margin-top: 1px;
+}
+.list-item.active .list-name { color: var(--text); }
+
+.no-results {
+  padding: 48px 20px;
+  text-align: center;
+  color: var(--text-light);
+  font-size: 0.88rem;
+  line-height: 1.7;
+}
+
+/* ── Detail Panel ── */
+.detail-panel {
+  flex: 1;
+  max-width: 620px;
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--card-shadow);
+  padding: 36px;
+  overflow-y: auto;
+  max-height: calc(100vh - 200px);
+  opacity: 0;
+  transform: translateX(30px);
+  pointer-events: none;
+  position: absolute;
+  right: -9999px;
+  transition: opacity 0.4s var(--ease), transform 0.4s var(--ease);
+}
+.detail-panel::-webkit-scrollbar { width: 3px; }
+.detail-panel::-webkit-scrollbar-track { background: transparent; }
+.detail-panel::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+.app.has-selection .detail-panel {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+  position: static;
+  right: auto;
+}
+
+.back-btn {
+  display: none;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--sans);
+  font-size: 0.84rem;
+  color: var(--text-secondary);
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-bottom: 20px;
+  padding: 4px 0;
+  transition: color 0.2s var(--ease);
+}
+.back-btn:hover { color: var(--text); }
+.back-btn svg { width: 16px; height: 16px; }
+.app.has-selection .back-btn { display: inline-flex; }
+
+.detail-header {
+  margin-bottom: 24px;
+}
+.detail-title {
+  font-family: var(--serif);
+  font-size: 1.8rem;
+  font-weight: 500;
+  margin-bottom: 4px;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+.detail-aka {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+/* ── Ingredient detail ── */
+.info-grid {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 0;
+  margin-bottom: 24px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+.info-row { display: contents; }
+.info-label {
+  padding: 9px 12px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-secondary);
+  background: var(--sage-bg);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+}
+.info-value {
+  padding: 9px 12px;
+  font-size: 0.87rem;
+  color: var(--text);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.info-row:last-child .info-label,
+.info-row:last-child .info-value { border-bottom: none; }
+
+.conflict-tag {
+  display: inline-block;
+  padding: 2px 9px;
+  font-size: 0.76rem;
+  font-weight: 500;
+  background: var(--amber-pill);
+  color: var(--amber-pill-text);
+  border-radius: 20px;
+}
+
+.section-title {
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: 24px 0 10px;
+  color: var(--text);
+}
+
+.product-rec {
+  background: var(--sage-bg);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  margin-bottom: 6px;
+}
+.product-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.product-details {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.35s var(--ease), opacity 0.25s var(--ease), margin 0.35s var(--ease);
+  margin-top: 0;
+}
+.product-rec.expanded .product-details {
+  max-height: 200px;
+  opacity: 1;
+  margin-top: 10px;
+}
+.info-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-light);
+  padding: 4px;
+  border-radius: 50%;
+  transition: color 0.2s, background 0.2s, transform 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.info-btn:hover {
+  color: var(--sage);
+  background: var(--sage-light);
+}
+.info-btn.small {
+  padding: 2px;
+}
+/* Routine step expand */
+.routine-step .step-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.routine-step .step-top .step-name {
+  flex: 1;
+}
+.routine-step .step-details {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.35s var(--ease), opacity 0.25s var(--ease), margin 0.35s var(--ease);
+  margin-top: 0;
+}
+.routine-step.expanded .step-details {
+  max-height: 200px;
+  opacity: 1;
+  margin-top: 8px;
+}
+.product-name {
+  font-weight: 600;
+  font-size: 0.88rem;
+  margin-bottom: 4px;
+}
+.product-review {
+  font-size: 0.8rem;
+  color: var(--sage);
+  font-weight: 500;
+  margin-bottom: 5px;
+  line-height: 1.4;
+}
+.product-note {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 6px;
+}
+.pill {
+  display: inline-block;
+  padding: 3px 11px;
+  font-size: 0.76rem;
+  font-weight: 500;
+  border-radius: 20px;
+}
+.pill.pro { background: var(--green-pill); color: var(--green-pill-text); }
+.pill.con { background: var(--amber-pill); color: var(--amber-pill-text); }
+
+/* ── Concern detail ── */
+.concern-desc {
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: var(--text);
+  margin-bottom: 24px;
+}
+
+.routine-container {
+  position: relative;
+  padding-left: 18px;
+}
+.routine-container::before {
+  content: '';
+  position: absolute;
+  left: 10px;
+  top: 22px;
+  bottom: 22px;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--rose-light), var(--rose), var(--rose-light));
+  border-radius: 2px;
+}
+.routine-step {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 14px 14px 48px;
+  margin-bottom: 8px;
+  margin-left: 22px;
+  position: relative;
+}
+.routine-step::before {
+  content: '';
+  position: absolute;
+  left: -31px;
+  top: 20px;
+  width: 16px;
+  height: 2px;
+  background: var(--rose-light);
+}
+.step-number {
+  position: absolute;
+  left: 14px;
+  top: 14px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--rose-light);
+  color: var(--rose);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.step-name {
+  font-weight: 600;
+  font-size: 0.88rem;
+  margin-bottom: 3px;
+}
+.step-why {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  margin-bottom: 5px;
+}
+.step-product {
+  font-size: 0.8rem;
+  color: var(--sage);
+  font-weight: 500;
+}
+.step-lookfor {
+  font-size: 0.76rem;
+  color: var(--text-light);
+  font-style: italic;
+  margin-top: 2px;
+}
+.step-freq {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--rose);
+  background: var(--rose-light);
+  padding: 2px 7px;
+  border-radius: 4px;
+  margin-top: 5px;
+}
+
+/* ── Timeline ── */
+.timeline {
+  background: var(--rose-bg);
+  border-radius: var(--radius-sm);
+  padding: 18px;
+  margin: 18px 0;
+}
+.timeline.ingredient-timeline { background: var(--sage-bg); }
+.timeline-title {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 0.92rem;
+  margin-bottom: 12px;
+  color: var(--text);
+}
+.timeline-rows {
+  position: relative;
+  padding-left: 16px;
+}
+.timeline-rows::before {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: var(--rose);
+  border-radius: 2px;
+  opacity: 0.3;
+}
+.timeline.ingredient-timeline .timeline-rows::before { background: var(--sage); }
+.timeline-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 10px;
+  font-size: 0.83rem;
+  align-items: baseline;
+  position: relative;
+}
+.timeline-row:last-child { margin-bottom: 0; }
+.timeline-row::before {
+  content: '';
+  position: absolute;
+  left: -16px;
+  top: 6px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--rose);
+}
+.timeline.ingredient-timeline .timeline-row::before { background: var(--sage); }
+.timeline-period {
+  font-weight: 600;
+  color: var(--rose);
+  min-width: 76px;
+  flex-shrink: 0;
+}
+.timeline.ingredient-timeline .timeline-period { color: var(--sage); }
+.timeline-desc { color: var(--text-secondary); }
+
+.closing-note {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+  line-height: 1.7;
+}
+
+.derm-note {
+  background: var(--amber-light);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  font-size: 0.82rem;
+  color: var(--amber-pill-text);
+  margin-top: 14px;
+  line-height: 1.6;
+}
+.derm-note strong { font-weight: 600; }
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+  .app { padding: 0 16px; }
+  .header { padding: 36px 0 0; }
+  .header h1 { font-size: 2rem; }
+  .app.has-selection .header h1 { font-size: 2rem; }
+  .header .subtitle { font-size: 0.85rem; margin-bottom: 20px; }
+
+  .content-area {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .list-panel {
+    max-width: 100%;
+  }
+  .app.has-selection .list-panel {
+    max-width: 100%;
+    min-width: unset;
+  }
+  .list-scroll {
+    max-height: 50vh;
+  }
+
+  /* Mobile: hide list when detail is shown */
+  .app.has-selection .header { display: none; }
+  .app.has-selection .list-panel { display: none; }
+  .app.has-selection .detail-panel {
+    max-height: none;
+    padding: 24px 18px;
+  }
+
+  .back-btn { display: none; }
+  .app.has-selection .back-btn { display: inline-flex; }
+
+  .info-grid { grid-template-columns: 110px 1fr; }
+  .routine-container { padding-left: 12px; }
+  .routine-step { margin-left: 16px; padding-left: 44px; }
+  .routine-step::before { left: -25px; width: 10px; }
+}
+
+/* ── Content transition on detail show ── */
+.detail-content {
+  animation: detailFadeIn 0.35s var(--ease) forwards;
+}
+@keyframes detailFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Logo (SVG wordmark) ── */
+.logo {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  user-select: none;
+}
+.logo-mark {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.logo-line {
+  width: 28px;
+  height: 1px;
+  background: var(--text);
+  opacity: 0.35;
+}
+.logo-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--sage);
+}
+.logo-wordmark {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 2.4rem;
+  letter-spacing: 0.02em;
+  color: var(--text);
+  line-height: 1;
+}
+.logo-wordmark .italic {
+  font-style: italic;
+  font-weight: 400;
+}
+
+/* ── Onboarding Overlay ── */
+.onboard {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(180deg, #f4f3ee 0%, #ecebe4 100%);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  overflow-y: auto;
+  opacity: 1;
+  transition: opacity 0.4s var(--ease);
+}
+.onboard.hiding { opacity: 0; pointer-events: none; }
+.onboard.hidden { display: none; }
+
+.onboard-card {
+  width: 100%;
+  max-width: 480px;
+  background: var(--card);
+  border-radius: 20px;
+  box-shadow: var(--card-shadow-lg);
+  padding: 40px 32px 32px;
+  text-align: center;
+  position: relative;
+}
+.onboard-progress {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  margin-bottom: 28px;
+}
+.onboard-progress-dot {
+  width: 24px;
+  height: 3px;
+  border-radius: 3px;
+  background: var(--border);
+  transition: background 0.3s var(--ease);
+}
+.onboard-progress-dot.done { background: var(--sage); }
+.onboard-progress-dot.current { background: var(--text); }
+
+.onboard-screen { display: none; }
+.onboard-screen.active {
+  display: block;
+  animation: detailFadeIn 0.4s var(--ease) forwards;
+}
+
+.onboard-intro .logo { margin-bottom: 20px; }
+.onboard-intro .logo-wordmark { font-size: 2.8rem; }
+.onboard-tagline {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  margin-bottom: 28px;
+  line-height: 1.5;
+}
+.onboard-blurb {
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 28px;
+  text-align: left;
+  background: var(--sage-bg);
+  border-radius: 12px;
+  padding: 16px 18px;
+}
+.onboard-blurb strong { color: var(--text); font-weight: 600; }
+
+.onboard-title {
+  font-family: var(--serif);
+  font-size: 1.45rem;
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+.onboard-sub {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+.onboard-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: left;
+  margin-bottom: 20px;
+}
+.onboard-input {
+  width: 100%;
+  padding: 12px 14px;
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #fafaf7;
+  color: var(--text);
+  outline: none;
+  transition: border 0.2s, background 0.2s;
+}
+.onboard-input:focus {
+  border-color: var(--sage);
+  background: #fff;
+}
+.onboard-input::placeholder { color: var(--text-light); }
+.onboard-input-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+.onboard-phone-wrap {
+  display: flex;
+  gap: 8px;
+}
+.onboard-phone-wrap select {
+  width: 90px;
+  padding: 12px 8px;
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #fafaf7;
+  outline: none;
+}
+.onboard-phone-wrap input { flex: 1; }
+.onboard-error {
+  font-size: 0.8rem;
+  color: #b85c5c;
+  margin-top: -4px;
+  margin-bottom: 8px;
+  display: none;
+  text-align: left;
+}
+.onboard-error.show { display: block; }
+
+.onboard-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.onboard-options.single-col { grid-template-columns: 1fr; }
+.onboard-option {
+  padding: 14px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  background: #fafaf7;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s var(--ease);
+  font-family: var(--sans);
+}
+.onboard-option:hover {
+  border-color: var(--sage);
+  background: #fff;
+}
+.onboard-option.selected {
+  border-color: var(--sage);
+  background: var(--sage-bg);
+}
+.onboard-option .opt-emoji {
+  font-size: 1.4rem;
+  margin-bottom: 4px;
+  display: block;
+  filter: grayscale(0.3);
+}
+.onboard-option .opt-label {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+.onboard-option .opt-sub {
+  font-size: 0.74rem;
+  color: var(--text-light);
+  line-height: 1.3;
+}
+
+.onboard-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+}
+.onboard-btn {
+  flex: 1;
+  padding: 13px 20px;
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s var(--ease);
+}
+.onboard-btn.primary {
+  background: var(--text);
+  color: #fff;
+}
+.onboard-btn.primary:hover { background: #444; }
+.onboard-btn.primary:disabled {
+  background: var(--border);
+  color: var(--text-light);
+  cursor: not-allowed;
+}
+.onboard-btn.ghost {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+}
+.onboard-btn.ghost:hover {
+  background: rgba(0,0,0,0.03);
+  color: var(--text);
+}
+
+.onboard-privacy {
+  font-size: 0.74rem;
+  color: var(--text-light);
+  margin-top: 14px;
+  line-height: 1.5;
+}
+
+/* ── Header Logo (in main app) ── */
+.app .header .logo { margin: 0 auto 16px; }
+.app .header .logo-wordmark { font-size: 2rem; }
+.app.has-selection .header .logo-wordmark { font-size: 1.5rem; }
+.app.has-selection .header .logo { margin-bottom: 8px; }
+
+/* ── User summary (greeting + persona inline) ── */
+.user-summary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-family: var(--sans);
+  font-size: 0.84rem;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+  padding: 0 8px;
+  max-width: 100%;
+}
+.user-summary .hi { color: var(--text-secondary); }
+.user-summary .hi strong { color: var(--text); font-weight: 600; }
+.user-summary .persona-divider {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--text-light);
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+.user-summary .persona-pills {
+  color: var(--text);
+  font-weight: 500;
+  background: var(--sage-bg);
+  padding: 3px 10px;
+  border-radius: 14px;
+  font-size: 0.78rem;
+}
+.edit-prefs {
+  background: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+  padding: 4px 6px;
+  color: var(--text-light);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border-radius: 6px;
+  font-family: var(--sans);
+  font-size: 0.74rem;
+  transition: all 0.2s;
+}
+.edit-prefs:hover { color: var(--text); background: rgba(0,0,0,0.04); }
+.edit-prefs svg { width: 12px; height: 12px; }
+.app.has-selection .user-summary { display: none; }
+
+/* ── Mode toggle row (inside .nav-card) ── */
+.mode-row {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2px;
+}
+.mode-toggle {
+  display: inline-flex;
+  padding: 2px;
+  gap: 2px;
+  background: transparent;
+}
+.mode-btn { min-width: 64px; }
+.mode-btn {
+  padding: 6px 18px;
+  border: none;
+  background: transparent;
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  border-radius: 22px;
+  cursor: pointer;
+  transition: all 0.25s var(--ease);
+  letter-spacing: 0.01em;
+}
+.mode-btn.active {
+  background: var(--card);
+  color: var(--text);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+}
+
+/* ── Recommended badge on list items ── */
+.list-item .rec-badge {
+  font-size: 0.66rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--sage);
+  background: var(--sage-light);
+  padding: 2px 7px;
+  border-radius: 4px;
+  margin-left: 6px;
+  flex-shrink: 0;
+}
+
+/* ── Mobile onboard adjustments ── */
+@media (max-width: 768px) {
+  .onboard-card { padding: 28px 20px 24px; border-radius: 16px; }
+  .onboard-intro .logo-wordmark { font-size: 2.2rem; }
+  .onboard-title { font-size: 1.25rem; }
+  .onboard-options { grid-template-columns: 1fr 1fr; }
+  .onboard-option { padding: 12px 8px; }
+  .onboard-option .opt-label { font-size: 0.85rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- Onboarding Overlay -->
+<div class="onboard" id="onboard">
+  <div class="onboard-card">
+    <div class="onboard-progress" id="onboardProgress">
+      <div class="onboard-progress-dot current"></div>
+      <div class="onboard-progress-dot"></div>
+      <div class="onboard-progress-dot"></div>
+      <div class="onboard-progress-dot"></div>
+    </div>
+
+    <!-- Screen 1: Welcome + Logo -->
+    <div class="onboard-screen active" data-screen="0">
+      <div class="onboard-intro">
+        <div class="logo">
+          <div class="logo-wordmark">Bare <span class="italic">Label</span></div>
+        </div>
+        <p class="onboard-tagline">Hair care advice you can actually trust.</p>
+        <div class="onboard-blurb">
+          A <strong>knowledgeable friend</strong> for your hair. No brand bias. No selling. Just what actually works for your scalp and strands.
+        </div>
+      </div>
+      <div class="onboard-actions">
+        <button class="onboard-btn primary" onclick="onboardNext()">Personalize my experience</button>
+      </div>
+    </div>
+
+    <!-- Screen 2: Name + Phone -->
+    <div class="onboard-screen" data-screen="1">
+      <h2 class="onboard-title">First, the basics</h2>
+      <p class="onboard-sub">So we know who's getting these recommendations.</p>
+      <div class="onboard-form">
+        <div>
+          <div class="onboard-input-label">Your name</div>
+          <input type="text" class="onboard-input" id="onboardName" placeholder="e.g. Priya" autocomplete="given-name">
+        </div>
+        <div>
+          <div class="onboard-input-label">Phone number</div>
+          <div class="onboard-phone-wrap">
+            <select id="onboardCountry">
+              <option value="+91">IN +91</option>
+              <option value="+1">US +1</option>
+              <option value="+44">UK +44</option>
+              <option value="+971">AE +971</option>
+              <option value="+61">AU +61</option>
+              <option value="+65">SG +65</option>
+            </select>
+            <input type="tel" class="onboard-input" id="onboardPhone" placeholder="10-digit number" autocomplete="tel-national">
+          </div>
+        </div>
+      </div>
+      <div class="onboard-error" id="onboardError"></div>
+      <div class="onboard-actions">
+        <button class="onboard-btn ghost" onclick="onboardBack()">Back</button>
+        <button class="onboard-btn primary" onclick="onboardSubmitContact()">Continue</button>
+      </div>
+      <p class="onboard-privacy">We use this to personalize your experience and share new science-backed recommendations. We won't spam you.</p>
+    </div>
+
+    <!-- Screen 3: Hair Type -->
+    <div class="onboard-screen" data-screen="2">
+      <h2 class="onboard-title">What's your hair like?</h2>
+      <p class="onboard-sub">Texture matters more than length here.</p>
+      <div class="onboard-options" id="hairTypeOptions">
+        <div class="onboard-option" data-value="straight">
+          <span class="opt-emoji">∥</span>
+          <div class="opt-label">Straight</div>
+          <div class="opt-sub">Mostly straight, no curl</div>
+        </div>
+        <div class="onboard-option" data-value="wavy">
+          <span class="opt-emoji">∼</span>
+          <div class="opt-label">Wavy</div>
+          <div class="opt-sub">Loose S-shape waves</div>
+        </div>
+        <div class="onboard-option" data-value="curly">
+          <span class="opt-emoji">◯</span>
+          <div class="opt-label">Curly</div>
+          <div class="opt-sub">Defined curls or ringlets</div>
+        </div>
+        <div class="onboard-option" data-value="coily">
+          <span class="opt-emoji">⊛</span>
+          <div class="opt-label">Coily</div>
+          <div class="opt-sub">Tight coils or kinks</div>
+        </div>
+      </div>
+      <div class="onboard-actions">
+        <button class="onboard-btn ghost" onclick="onboardBack()">Back</button>
+        <button class="onboard-btn primary" id="hairTypeNext" onclick="onboardNext()" disabled>Continue</button>
+      </div>
+    </div>
+
+    <!-- Screen 4: Hair Concern -->
+    <div class="onboard-screen" data-screen="3">
+      <h2 class="onboard-title">What's your biggest hair concern?</h2>
+      <p class="onboard-sub">Pick one. You can explore the rest later.</p>
+      <div class="onboard-options" id="hairConcernOptions">
+        <div class="onboard-option" data-value="hair-fall">
+          <div class="opt-label">Hair fall / thinning</div>
+        </div>
+        <div class="onboard-option" data-value="dandruff">
+          <div class="opt-label">Dandruff / flakes</div>
+        </div>
+        <div class="onboard-option" data-value="dry-frizz">
+          <div class="opt-label">Dry, frizzy hair</div>
+        </div>
+        <div class="onboard-option" data-value="oily-scalp">
+          <div class="opt-label">Oily scalp</div>
+        </div>
+        <div class="onboard-option" data-value="dullness">
+          <div class="opt-label">Dull, lifeless hair</div>
+        </div>
+        <div class="onboard-option" data-value="greying">
+          <div class="opt-label">Premature greying</div>
+        </div>
+        <div class="onboard-option" data-value="none">
+          <div class="opt-label">No major issue</div>
+        </div>
+      </div>
+      <div class="onboard-actions">
+        <button class="onboard-btn ghost" onclick="onboardBack()">Back</button>
+        <button class="onboard-btn primary" id="hairConcernNext" onclick="onboardFinish()" disabled>Show me my recommendations</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="app" id="app">
+  <div class="header">
+    <div class="logo">
+      <div class="logo-wordmark">Bare <span class="italic">Label</span></div>
+    </div>
+    <p class="subtitle">Hair care advice you can actually trust.</p>
+    <div class="user-summary" id="userSummary" style="display:none;">
+      <span class="hi">Hi <strong id="userFirstName"></strong></span>
+      <span class="persona-divider"></span>
+      <span class="persona-pills" id="personaPills"></span>
+      <button class="edit-prefs" onclick="resetOnboarding()" aria-label="Edit preferences">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931z"/></svg>
+        edit
+      </button>
+    </div>
+    <div class="tabs" id="tabs">
+      <button class="tab active" data-tab="ingredients" onclick="switchTab('ingredients')">Ingredients</button>
+      <button class="tab" data-tab="concerns" onclick="switchTab('concerns')" id="concernsTab">Hair Concerns</button>
+    </div>
+  </div>
+
+  <div class="content-area">
+    <div class="list-panel" id="listPanel">
+      <div class="search-box">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/></svg>
+        <input type="text" id="searchInput" placeholder="Search..." oninput="filterList()">
+      </div>
+      <div class="list-scroll" id="listScroll"></div>
+    </div>
+    <div class="detail-panel" id="detailPanel"></div>
+  </div>
+</div>
+
+<script>
+let ingredients = [
+  {
+    name: "Salicylic Acid",
+    aka: "BHA, Beta Hydroxy Acid, 2-Hydroxybenzoic Acid",
+    sub: "BHA that unclogs pores from the inside",
+    type: "BHA / Beta Hydroxy Acid",
+    bestFor: "Acne, Blackheads, Keratosis Pilaris",
+    facePct: "0.5\u20132%",
+    bodyPct: "1\u20132%",
+    howOften: "Daily or every other day, PM",
+    dontMix: ["AHAs (same routine)", "Retinol (same routine)", "Vitamin C (same routine)"],
+    product: "Paula\u2019s Choice 2% BHA Liquid Exfoliant",
+    productReview: "67,000+ reviews, 4.5 stars. Reddit\u2019s r/SkincareAddiction holy grail for years. Dermatologist-recommended.",
+    productNote: "Look for: 2% salicylic acid at pH 3\u20134. Liquid format penetrates better than wash-off cleansers.",
+    pros: ["Penetrates into pores", "Oil-soluble", "Anti-inflammatory", "Good for body acne too"],
+    cons: ["Can be drying if overused", "Not ideal for very dry skin", "Avoid during pregnancy"],
+    expect: [
+      { period: "Week 1\u20132", desc: "Pores may look slightly clearer. Some dryness or mild peeling is normal." },
+      { period: "Week 4\u20136", desc: "Breakouts reduce noticeably. Blackheads start clearing. Skin feels smoother." },
+      { period: "Week 8+", desc: "Consistent clarity. Body acne and KP bumps soften significantly." }
+    ]
+  },
+  {
+    name: "Niacinamide",
+    aka: "Vitamin B3, Nicotinamide",
+    sub: "Vitamin B3 that brightens and calms",
+    type: "Vitamin / Antioxidant",
+    bestFor: "Large pores, Uneven tone, Oily skin, Redness",
+    facePct: "2\u201310%",
+    bodyPct: "5\u201310%",
+    howOften: "Twice daily, AM and PM",
+    dontMix: ["Pure Vitamin C at high concentrations (can cause flushing in some people)"],
+    product: "The Ordinary Niacinamide 10% + Zinc 1%",
+    productReview: "50,000+ reviews, 4.3 stars. One of the best-selling serums globally. Visible pore reduction in 4\u20136 weeks per most users.",
+    productNote: "Look for: 5% is effective and less likely to irritate than 10%. Zinc helps with oil control.",
+    pros: ["Plays well with most ingredients", "Reduces pore appearance", "Strengthens skin barrier", "Calms redness"],
+    cons: ["10% can cause breakouts in some", "Tingling at high concentrations", "Pill-ing under makeup if layered heavily"],
+    expect: [
+      { period: "Week 1\u20132", desc: "Skin may feel slightly smoother. Oil production might balance a bit." },
+      { period: "Week 4\u20136", desc: "Pores look smaller. Redness and uneven tone start improving." },
+      { period: "Week 8+", desc: "Visible brightening. Skin barrier feels stronger and more resilient." }
+    ]
+  },
+  {
+    name: "Glycolic Acid",
+    aka: "AHA, Alpha Hydroxy Acid (from sugarcane)",
+    sub: "AHA that exfoliates the surface for glow",
+    type: "AHA / Alpha Hydroxy Acid",
+    bestFor: "Dullness, Fine lines, Sun damage, Texture",
+    facePct: "5\u201310% (daily), up to 30% (peels)",
+    bodyPct: "10\u201315%",
+    howOften: "2\u20133x per week, PM (daily if tolerated)",
+    dontMix: ["Retinol (same routine)", "Other AHAs/BHA (same routine)", "Vitamin C at low pH"],
+    product: "The Ordinary Glycolic Acid 7% Toning Solution",
+    productReview: "38,000+ reviews, 4.4 stars. Cult favorite for body KP too. Noticeable glow after first use according to most reviewers.",
+    productNote: "Look for: pH between 3\u20134 for effectiveness. Start at 5% and work up. Always use sunscreen the next morning.",
+    pros: ["Immediate glow", "Reduces fine lines over time", "Well-researched", "Good for body too"],
+    cons: ["Increases sun sensitivity", "Can sting on broken skin", "Too strong for sensitive skin", "Not great with retinol"],
+    expect: [
+      { period: "Week 1\u20132", desc: "Instant glow after first use. Some tingling and mild flaking is normal." },
+      { period: "Week 4\u20136", desc: "Dark spots start fading. Skin texture evens out noticeably." },
+      { period: "Week 8+", desc: "Fine lines soften. Skin looks brighter and more even-toned overall." }
+    ]
+  },
+  {
+    name: "Hyaluronic Acid",
+    aka: "HA, Sodium Hyaluronate, Hyaluronan",
+    sub: "Humectant that draws water into skin",
+    type: "Humectant / Moisturizer",
+    bestFor: "Dehydration, Fine lines, Plumping, All skin types",
+    facePct: "0.1\u20132%",
+    bodyPct: "0.5\u20132%",
+    howOften: "Twice daily, AM and PM",
+    dontMix: ["Nothing major \u2014 plays well with everything"],
+    product: "Hada Labo Gokujyun Premium Lotion",
+    productReview: "Japan\u2019s #1 selling hydrating lotion. 30,000+ reviews, 4.6 stars. Multiple HA weights for deep + surface hydration.",
+    productNote: "Look for: multi-weight HA (different molecular sizes). Apply to damp skin and seal with a moisturizer, or it can draw moisture out.",
+    pros: ["Suits all skin types", "Non-irritating", "Layers under anything", "Instant plumping"],
+    cons: ["Can feel tacky", "Must seal with moisturizer", "Can dehydrate in very dry climates if not layered properly"],
+    expect: [
+      { period: "Day 1", desc: "Immediate plumping effect. Skin feels bouncy and hydrated right away." },
+      { period: "Week 2\u20134", desc: "Fine dehydration lines look less visible. Skin stays comfortable all day." },
+      { period: "Week 6+", desc: "Sustained hydration baseline. Skin holds moisture better even without reapplying." }
+    ]
+  },
+  {
+    name: "Retinol",
+    aka: "Vitamin A, Retinoid (OTC form)",
+    sub: "Gold standard anti-aging, boosts cell turnover",
+    type: "Retinoid / Vitamin A Derivative",
+    bestFor: "Fine lines, Acne, Hyperpigmentation, Texture",
+    facePct: "0.025\u20131% (start low)",
+    bodyPct: "0.1\u20130.5%",
+    howOften: "2\u20133x per week to start, build to nightly. PM only.",
+    dontMix: ["AHAs/BHAs (same routine)", "Benzoyl Peroxide", "Vitamin C (same routine, different times OK)"],
+    product: "CeraVe Resurfacing Retinol Serum",
+    productReview: "25,000+ reviews, 4.3 stars. Best beginner retinol per dermatologists. Encapsulated formula = less irritation than most.",
+    productNote: "Look for: encapsulated retinol for less irritation. Start at 0.025\u20130.3% and increase slowly over months. Buffer with moisturizer if needed.",
+    pros: ["Most evidence-backed anti-aging ingredient", "Treats acne and aging simultaneously", "Improves texture long-term"],
+    cons: ["Causes purging initially", "Drying and peeling at first", "Sun sensitivity", "Avoid during pregnancy"],
+    expect: [
+      { period: "Week 1\u20133", desc: "Purging is likely \u2014 existing clogged pores come to the surface. Dryness and peeling are normal." },
+      { period: "Week 4\u20138", desc: "Purging subsides. Skin texture visibly improves. Fine lines start softening." },
+      { period: "Month 3+", desc: "Full results kick in. Skin looks firmer, clearer, and more even. This is a long game \u2014 patience pays off." }
+    ]
+  },
+  {
+    name: "Azelaic Acid",
+    aka: "Nonanedioic Acid, Dicarboxylic Acid",
+    sub: "Anti-inflammatory brightener, pregnancy-safe",
+    type: "Dicarboxylic Acid",
+    bestFor: "Rosacea, PIH, Melasma, Mild acne",
+    facePct: "10% (OTC), 15\u201320% (prescription)",
+    bodyPct: "10\u201315%",
+    howOften: "Twice daily, AM and PM",
+    dontMix: ["Generally compatible with most ingredients"],
+    product: "Paula\u2019s Choice 10% Azelaic Acid Booster",
+    productReview: "12,000+ reviews, 4.4 stars. Lightweight gel texture absorbs well. Rosacea and PIH communities swear by it.",
+    productNote: "Look for: 10% minimum for visible results. Prescription 15\u201320% (Finacea, Skinoren) is more effective for rosacea and melasma.",
+    pros: ["Safe during pregnancy", "Treats rosacea", "Brightens without sun sensitivity", "Anti-bacterial"],
+    cons: ["Can pill under makeup", "Mild stinging initially", "OTC strengths less potent", "Takes 8\u201312 weeks for results"],
+    expect: [
+      { period: "Week 1\u20134", desc: "Mild stinging when first applied. Redness may calm slightly but don\u2019t expect visible changes yet." },
+      { period: "Week 6\u20138", desc: "Dark spots start fading. Rosacea bumps reduce. Skin tone evens out gradually." },
+      { period: "Week 12+", desc: "Full brightening effect. Melasma patches lighter. This ingredient rewards patience more than most." }
+    ]
+  },
+  {
+    name: "Lactic Acid",
+    aka: "AHA (from milk), L-Lactic Acid",
+    sub: "Gentle AHA that hydrates while exfoliating",
+    type: "AHA / Alpha Hydroxy Acid",
+    bestFor: "Dry skin, Sensitive skin, Mild texture, KP on body",
+    facePct: "5\u201310%",
+    bodyPct: "10\u201315%",
+    howOften: "2\u20133x per week, PM",
+    dontMix: ["Other AHAs/BHA (same routine)", "Retinol (same routine)"],
+    product: "The Ordinary Lactic Acid 10% + HA",
+    productReview: "28,000+ reviews, 4.4 stars. Gentle enough for sensitive skin. Users report smoother, brighter skin within 2 weeks.",
+    productNote: "Look for: lactic acid with HA for added hydration. Gentler than glycolic, making it great for AHA beginners or drier skin types. Start with 5% if new to acids.",
+    pros: ["Gentler than glycolic acid", "Hydrates while exfoliating", "Good for beginners", "Great for body (KP)"],
+    cons: ["Less potent than glycolic", "Still increases sun sensitivity", "Can sting on broken skin"],
+    expect: [
+      { period: "Week 1\u20132", desc: "Gentle surface exfoliation. Skin feels smoother to the touch, slightly more hydrated." },
+      { period: "Week 4\u20136", desc: "KP bumps start flattening. Dull skin looks more radiant. Dry patches soften." },
+      { period: "Week 8+", desc: "Noticeable texture improvement. Skin feels consistently smooth and more even-toned." }
+    ]
+  },
+  {
+    name: "Vitamin C",
+    aka: "L-Ascorbic Acid, Ascorbyl Glucoside, MAP",
+    sub: "Antioxidant powerhouse that brightens and protects",
+    type: "Antioxidant / Vitamin",
+    bestFor: "Dullness, Dark spots, Sun damage prevention, Firmness",
+    facePct: "10\u201320% (L-Ascorbic Acid)",
+    bodyPct: "10\u201315%",
+    howOften: "Daily, AM (under sunscreen)",
+    dontMix: ["Niacinamide at very high concentrations (debated)", "AHAs/BHAs at low pH (same routine)"],
+    product: "Timeless 20% Vitamin C + E + Ferulic Acid Serum",
+    productReview: "15,000+ reviews, 4.5 stars. SkinCeuticals CE Ferulic dupe at 1/5th the price. Same gold-standard formula backed by the original Duke patent study.",
+    productNote: "Look for: L-Ascorbic Acid at pH below 3.5 with Vitamin E and Ferulic Acid (the gold-standard combo). Store in a cool, dark place. Discard when it turns brown.",
+    pros: ["Protects against UV damage", "Brightens existing dark spots", "Boosts collagen", "Works great with sunscreen"],
+    cons: ["Oxidizes quickly (short shelf life)", "Can sting on sensitive skin", "L-AA formulas can be pricey", "Unstable in many formulations"],
+    expect: [
+      { period: "Week 1\u20132", desc: "Slight brightening effect. Skin looks more awake in the morning, especially under sunscreen." },
+      { period: "Week 4\u20138", desc: "Dark spots and sun damage start fading. Skin tone looks more even." },
+      { period: "Month 3+", desc: "Cumulative antioxidant protection shows. Skin is firmer, brighter, and more resistant to new damage." }
+    ]
+  },
+  {
+    name: "Urea",
+    aka: "Carbamide, Carbonyl Diamide",
+    sub: "Deep moisturizer that softens rough, cracked skin",
+    type: "Keratolytic / Humectant",
+    bestFor: "Extremely dry skin, Eczema, Psoriasis, Cracked heels, KP",
+    facePct: "2\u20135% (moisturizing), 10% (exfoliating)",
+    bodyPct: "10\u201340% (depending on severity)",
+    howOften: "1\u20132x daily",
+    dontMix: ["Generally safe with everything \u2014 avoid layering with strong acids on sensitive areas"],
+    product: "Eucerin UreaRepair Plus 10% Urea Cream",
+    productReview: "20,000+ reviews, 4.6 stars. Dermatologist #1 pick for extreme dryness and KP. Users with cracked heels see results in days.",
+    productNote: "Look for: 5% urea for face/mild dryness, 10% for body/KP, 20\u201340% for very rough areas like heels. Higher % = stronger exfoliation.",
+    pros: ["Deeply hydrating", "Softens calluses and rough patches", "Non-irritating at low %", "Helps other ingredients absorb"],
+    cons: ["High concentrations can sting on broken skin", "Can smell slightly at very high %", "40%+ only for feet/very rough areas"],
+    expect: [
+      { period: "Day 1\u20133", desc: "Immediate relief on dry, cracked skin. Rough patches feel softer after first application." },
+      { period: "Week 2\u20134", desc: "Cracked heels and rough elbows smooth out. KP bumps flatten noticeably." },
+      { period: "Week 6+", desc: "Deep dryness resolved. Skin holds moisture better on its own. Calluses and rough patches dramatically softer." }
+    ]
+  },
+  {
+    name: "Centella Asiatica",
+    aka: "Cica, Gotu Kola, Tiger Grass, Madecassoside",
+    sub: "Soothing botanical that repairs and calms",
+    type: "Botanical / Anti-inflammatory",
+    bestFor: "Sensitive skin, Redness, Barrier repair, Post-procedure healing",
+    facePct: "1\u20135% (extract), varies in formulation",
+    bodyPct: "1\u20135%",
+    howOften: "Twice daily, AM and PM",
+    dontMix: ["Compatible with virtually everything"],
+    product: "COSRX Centella Blemish Cream",
+    productReview: "22,000+ reviews, 4.4 stars. K-beauty staple for calming redness. Users recovering from peels and laser treatments love it.",
+    productNote: "Look for: products listing madecassoside, asiaticoside, madecassic acid, or asiatic acid \u2014 these are the active compounds. The more specific, the better.",
+    pros: ["Extremely gentle", "Repairs skin barrier", "Calms redness and irritation", "Great post-procedure"],
+    cons: ["Results are subtle", "Not a standalone for acne", "Quality varies widely between products"],
+    expect: [
+      { period: "Day 1\u20133", desc: "Immediate soothing effect. Redness and irritation calm down quickly." },
+      { period: "Week 2\u20134", desc: "Skin barrier feels stronger. Less reactive to other products. Post-acne redness fades." },
+      { period: "Week 6+", desc: "Consistently calmer skin. Great as a supporting ingredient alongside actives." }
+    ]
+  },
+  {
+    name: "Rosehip Oil",
+    category: "skin",
+    aka: "Rosa canina seed oil, Rosa mosqueta",
+    sub: "Cold-pressed oil rich in vitamin A and linoleic acid",
+    type: "Carrier Oil / Facial Oil",
+    bestFor: "Scarring, Hyperpigmentation, Dry skin, Fine lines",
+    facePct: "Pure or 5\u201310% in serums",
+    bodyPct: "Pure or blended",
+    howOften: "Daily, PM (or AM if you tolerate)",
+    dontMix: ["Strong retinol on the same night (occlusive layer)", "Layering under SPF can pill"],
+    product: "Trilogy Certified Organic Rosehip Oil",
+    productReview: "12,000+ reviews, 4.5 stars. Cult favorite cold-pressed, organic. Visible scar fading in 4\u20138 weeks per long-term reviewers.",
+    productNote: "Look for: cold-pressed, organic, dark glass bottle (oxidizes in light). Should smell earthy/grassy \u2014 not rancid or fishy. Refrigerate to extend shelf life.",
+    pros: ["Natural vitamin A (tretinoin-like effect, gentler)", "Fades scars and PIH", "Pregnancy-safe", "High in linoleic acid (great for acne-prone)"],
+    cons: ["Short shelf life (6 months opened)", "Can oxidize if stored wrong", "Slight earthy scent"],
+    expect: [
+      { period: "Week 1\u20132", desc: "Skin feels softer and more hydrated. No dramatic visible change yet." },
+      { period: "Week 4\u20136", desc: "Scars and dark marks start fading. Skin texture smoother." },
+      { period: "Week 8+", desc: "Noticeable brightening and scar reduction. Fine lines look softer." }
+    ]
+  },
+  {
+    name: "Jojoba Oil",
+    category: "skin",
+    aka: "Simmondsia chinensis, liquid wax ester",
+    sub: "Mimics your skin's natural oil \u2014 balances everything",
+    type: "Carrier Oil / Wax Ester",
+    bestFor: "Oily skin, Combo skin, Sensitive skin, Hair (light)",
+    facePct: "Pure or 10\u201320% in formulas",
+    bodyPct: "Pure",
+    howOften: "Daily, AM or PM",
+    dontMix: ["Plays well with everything"],
+    product: "Cliganic 100% Pure Jojoba Oil",
+    productReview: "30,000+ reviews, 4.5 stars. USDA organic, cold-pressed. The go-to budget jojoba oil per /r/SkincareAddiction.",
+    productNote: "Look for: 100% pure, cold-pressed, in a dark glass bottle. Should be golden, not clear (clear = refined, less beneficial). Long shelf life (2+ years).",
+    pros: ["Non-comedogenic", "Balances oil production", "Long shelf life (doesn't oxidize easily)", "Works for face, body, and hair tips"],
+    cons: ["Subtle results", "Pricier than coconut/olive oil", "Not deeply moisturizing on very dry skin"],
+    expect: [
+      { period: "Day 1\u20133", desc: "Skin feels soft, not greasy. Surprisingly absorbs quickly." },
+      { period: "Week 2\u20134", desc: "Oil production starts balancing. Less midday shine." },
+      { period: "Week 6+", desc: "Consistent comfortable hydration. Great as a daily go-to face oil." }
+    ]
+  },
+  {
+    name: "Squalane",
+    category: "skin",
+    aka: "Hydrogenated squalene, plant-derived squalane",
+    sub: "Weightless oil that suits literally every skin type",
+    type: "Saturated Hydrocarbon / Emollient",
+    bestFor: "All skin types, Sensitive skin, Post-procedure, Dehydration",
+    facePct: "Pure or 5\u201320% in formulas",
+    bodyPct: "Pure",
+    howOften: "Daily, AM and PM",
+    dontMix: ["Compatible with everything"],
+    product: "The Ordinary 100% Plant-Derived Squalane",
+    productReview: "45,000+ reviews, 4.6 stars. Affordable plant-derived (sugarcane), not shark-derived. Lightweight, fast-absorbing.",
+    productNote: "Look for: plant-derived (sugarcane or olive), not shark-derived. 100% squalane. Long shelf life \u2014 doesn't oxidize.",
+    pros: ["Truly non-comedogenic", "Mimics skin's natural lipids", "Stable shelf life", "Doesn't sting or break out anyone"],
+    cons: ["Pricier per ml than other oils", "Not deeply nourishing on very dehydrated skin", "Subtle results \u2014 boring in the best way"],
+    expect: [
+      { period: "Day 1", desc: "Skin feels comfortable and smooth right away. Zero irritation." },
+      { period: "Week 2\u20134", desc: "Barrier feels stronger. Less reactive to actives layered underneath." },
+      { period: "Week 6+", desc: "Consistent comfort. Becomes your no-brainer daily moisturizer step." }
+    ]
+  },
+  {
+    name: "Bakuchiol",
+    category: "skin",
+    aka: "Babchi extract, plant-based retinol alternative",
+    sub: "Retinol-like results without the irritation",
+    type: "Plant Extract / Retinol Alternative",
+    bestFor: "Sensitive skin, Pregnancy-safe anti-aging, Fine lines, Texture",
+    facePct: "0.5\u20132%",
+    bodyPct: "0.5\u20131%",
+    howOften: "Twice daily, AM and PM",
+    dontMix: ["Compatible with most ingredients including Vitamin C and AHAs"],
+    product: "Herbivore Bakuchiol Retinol Alternative Serum",
+    productReview: "8,000+ reviews, 4.4 stars. Pregnancy-safe. Comparable to retinol after 12 weeks per the 2018 British Journal of Dermatology study.",
+    productNote: "Look for: 0.5\u20131% bakuchiol minimum. Combinations with niacinamide or peptides are even better. Should be a stable amber/yellow color.",
+    pros: ["Pregnancy and breastfeeding safe", "No purging, peeling, or sun sensitivity", "Plays well with everything", "Genuinely works (clinically studied)"],
+    cons: ["Slower results than tretinoin", "Newer ingredient \u2014 less long-term data", "Pricier than retinol"],
+    expect: [
+      { period: "Week 1\u20133", desc: "Skin feels smoother. No irritation, no purging." },
+      { period: "Week 4\u20138", desc: "Fine lines start softening. Texture improving." },
+      { period: "Week 12+", desc: "Comparable to retinol in studies \u2014 firmer, brighter, more even skin." }
+    ]
+  },
+  {
+    name: "Ceramides",
+    category: "skin",
+    aka: "Ceramide NP, AP, EOP, phytosphingosine",
+    sub: "The lipid glue holding your skin barrier together",
+    type: "Lipid / Barrier Repair",
+    bestFor: "Dry skin, Sensitive skin, Eczema, Damaged barrier",
+    facePct: "0.5\u20135%",
+    bodyPct: "1\u20135%",
+    howOften: "Twice daily, AM and PM",
+    dontMix: ["Compatible with everything"],
+    product: "CeraVe Moisturizing Cream",
+    productReview: "100,000+ reviews, 4.7 stars. Dermatologist #1 pick for barrier repair. Contains ceramides 1, 3, 6-II plus cholesterol and fatty acids in the right ratio.",
+    productNote: "Look for: ceramide blends (NP + AP + EOP) with cholesterol and fatty acids \u2014 the 3:1:1 ratio mimics natural skin lipids. Single-ceramide formulas are less effective.",
+    pros: ["Restores damaged barrier", "Great for all skin types", "Reduces sensitivity over time", "Layers under and over actives"],
+    cons: ["Subtle, slow results", "Some formulations feel heavy", "Quality varies wildly between brands"],
+    expect: [
+      { period: "Day 1\u20133", desc: "Skin feels more comfortable. Less tight after cleansing." },
+      { period: "Week 2\u20134", desc: "Reactivity drops. Skin tolerates actives better." },
+      { period: "Week 6+", desc: "Barrier visibly stronger. Skin holds moisture better through the day." }
+    ]
+  },
+  {
+    name: "Castor Oil",
+    category: "hair",
+    aka: "Ricinus communis seed oil",
+    sub: "Thick oil traditionally used for hair growth and thickness",
+    type: "Carrier Oil (heavy)",
+    bestFor: "Hair fall, Thinning edges, Eyebrow/lash growth, Scalp dryness",
+    facePct: "Mix 1:1 with lighter oil (jojoba/coconut)",
+    bodyPct: "Apply to scalp/lengths",
+    howOften: "1\u20132x per week, leave 1\u20132 hours before wash",
+    dontMix: ["Don't apply neat \u2014 too thick, hard to wash out", "Avoid if you have low porosity hair (won't absorb)"],
+    product: "Sky Organics Organic Castor Oil",
+    productReview: "40,000+ reviews, 4.5 stars. Cold-pressed, hexane-free. Best for thickening sparse brows, lashes, and edges per long-term reviewers.",
+    productNote: "Look for: cold-pressed, organic, hexane-free. Jamaican Black Castor Oil is roasted \u2014 stronger but harsher. Mix with a lighter oil (jojoba, coconut, almond) for easier application.",
+    pros: ["Genuinely thickens lashes/brows over time", "Rich in ricinoleic acid (anti-inflammatory)", "Great for sparse edges", "Long shelf life"],
+    cons: ["Extremely thick \u2014 hard to wash out", "Can weigh hair down", "Slow results (8\u201312 weeks)", "Some find the smell off-putting"],
+    expect: [
+      { period: "Week 1\u20132", desc: "Brows/lashes feel conditioned. Scalp less itchy." },
+      { period: "Week 4\u20136", desc: "Brows and edges look slightly fuller. Hair feels stronger." },
+      { period: "Week 8\u201312", desc: "Visible thickness gains on brows, lashes, and patchy edges. Less hair shedding." }
+    ]
+  },
+  {
+    name: "Rosemary Oil",
+    category: "hair",
+    aka: "Rosmarinus officinalis essential oil",
+    sub: "The essential oil that rivals minoxidil for hair growth",
+    type: "Essential Oil",
+    bestFor: "Hair fall, Thinning, Slow growth, Dandruff",
+    facePct: "Dilute to 2\u20135% in carrier oil",
+    bodyPct: "10 drops per 30ml of carrier oil",
+    howOften: "2\u20133x per week, massage into scalp 30 min before wash",
+    dontMix: ["NEVER apply neat to scalp (must dilute in carrier)", "Avoid during pregnancy", "Avoid if epileptic (can trigger seizures rarely)"],
+    product: "Mielle Organics Rosemary Mint Scalp & Hair Oil",
+    productReview: "60,000+ reviews, 4.6 stars. Viral TikTok hair growth product. Backed by 2015 study showing rosemary matched minoxidil 2% over 6 months.",
+    productNote: "Look for: real rosemary essential oil (not just 'fragrance'), pre-diluted in carrier (jojoba, castor, coconut). DIY: 10 drops rosemary essential oil in 30ml jojoba.",
+    pros: ["Clinically comparable to minoxidil 2%", "Improves scalp circulation", "Antimicrobial (helps dandruff)", "Affordable"],
+    cons: ["Strong smell some don't like", "Must dilute (skin irritant neat)", "Takes 4\u20136 months for full results", "Not safe in pregnancy"],
+    expect: [
+      { period: "Week 2\u20134", desc: "Scalp feels tingly and stimulated. Possible slight reduction in shedding." },
+      { period: "Month 2\u20133", desc: "New baby hairs start appearing at temples and crown." },
+      { period: "Month 4\u20136", desc: "Visible density improvement. The 2015 study showed comparable results to minoxidil at this point." }
+    ]
+  },
+  {
+    name: "Argan Oil",
+    category: "hair",
+    aka: "Argania spinosa kernel oil, 'liquid gold'",
+    sub: "Lightweight Moroccan oil for shine and frizz",
+    type: "Carrier Oil (light)",
+    bestFor: "Frizz, Dryness, Dullness, All hair types",
+    facePct: "Pure, 2\u20133 drops on damp/dry lengths",
+    bodyPct: "Pure on scalp once a week",
+    howOften: "Daily on lengths/ends, weekly on scalp",
+    dontMix: ["Generally compatible with everything", "Don't overuse \u2014 can weigh fine hair down"],
+    product: "Josie Maran 100% Pure Argan Oil",
+    productReview: "20,000+ reviews, 4.7 stars. USDA organic, ethically sourced from Moroccan women's cooperatives. Multipurpose face/hair/body.",
+    productNote: "Look for: 100% pure, cold-pressed, organic, in a dark glass bottle. Should smell mildly nutty, not perfumed. Pricier than other oils \u2014 worth it for purity.",
+    pros: ["Lightweight \u2014 won't weigh hair down", "Adds shine without grease", "Works on face and body too", "Smooths frizz instantly"],
+    cons: ["Expensive", "Quality varies wildly", "Watered-down 'argan blends' don't work", "Subtle benefits if you have already-healthy hair"],
+    expect: [
+      { period: "Day 1", desc: "Hair instantly smoother and shinier. Frizz tamed." },
+      { period: "Week 2\u20134", desc: "Ends look healthier. Less breakage when brushing." },
+      { period: "Week 6+", desc: "Sustained shine and softness. Split ends look less obvious." }
+    ]
+  },
+  {
+    name: "Bhringraj Oil",
+    category: "hair",
+    aka: "Eclipta alba, 'King of Herbs', Bringraj",
+    sub: "Ayurvedic herb for hair growth, density, and reversing greying",
+    type: "Herbal Carrier Oil",
+    bestFor: "Hair fall, Premature greying, Thinning, Slow growth",
+    facePct: "Pure or warmed before application",
+    bodyPct: "Massage into scalp",
+    howOften: "2\u20133x per week, overnight or 1\u20132 hours before wash",
+    dontMix: ["Generally safe \u2014 patch test first if sensitive", "Can stain pillowcases (use an old one)"],
+    product: "Khadi Natural Bhringraj Hair Oil or Indulekha Bringha Oil",
+    productReview: "Indulekha: 35,000+ reviews on Amazon India, 4.3 stars. Clinically tested in India \u2014 50%+ reported reduced hair fall in 4\u20138 weeks.",
+    productNote: "Look for: bhringraj as the FIRST ingredient (not mineral oil base). Cold-processed Ayurvedic formulations are better than refined ones. Warm slightly before applying.",
+    pros: ["Centuries of traditional use", "Clinically tested for hair fall", "May slow greying", "Calming sleep aid when massaged in"],
+    cons: ["Strong herbal smell", "Can stain fabrics", "Slow results (8\u201312 weeks)", "Some formulas are mostly base oil"],
+    expect: [
+      { period: "Week 2\u20134", desc: "Scalp feels nourished. Hair softer." },
+      { period: "Week 6\u20138", desc: "Less hair shedding in the shower. Scalp itchiness reduces." },
+      { period: "Week 12+", desc: "Visible density at parting. Premature greys may slow (won't reverse existing ones)." }
+    ]
+  },
+  {
+    name: "Onion Oil",
+    category: "hair",
+    aka: "Allium cepa extract oil",
+    sub: "Sulfur-rich oil clinically shown to regrow hair",
+    type: "Herbal Carrier Oil",
+    bestFor: "Patchy hair loss, Alopecia areata, Thinning",
+    facePct: "Pure on affected areas",
+    bodyPct: "Massage into scalp",
+    howOften: "2\u20133x per week, leave 30\u201360 min before wash",
+    dontMix: ["Avoid if you have sulfur sensitivity", "Patch test \u2014 can irritate sensitive scalps"],
+    product: "Mamaearth Onion Hair Oil or WishCare 100% Pure Onion Oil",
+    productReview: "Mamaearth: 50,000+ reviews, 4.2 stars. Bestseller in India. Based on a 2002 study showing 86% regrowth in alopecia areata patients with raw onion juice.",
+    productNote: "Look for: real onion extract (not just fragrance), with carrier oils (coconut, almond, castor). Should smell mildly oniony \u2014 strong stink = real ingredient.",
+    pros: ["Backed by a 2002 dermatology study", "Particularly effective for patchy hair loss", "Affordable", "Easy to find in India"],
+    cons: ["Smells strongly of onion (washes out)", "Can irritate sensitive scalps", "Quality of 'onion oils' varies wildly"],
+    expect: [
+      { period: "Week 2\u20134", desc: "Scalp tingles. Hair feels stronger." },
+      { period: "Week 6\u20138", desc: "Less shedding. Possible peach-fuzz regrowth in patchy areas." },
+      { period: "Week 12+", desc: "Visible regrowth in alopecia patches per the original study (4\u20138 weeks for partial response)." }
+    ]
+  },
+  {
+    name: "Tea Tree Oil",
+    category: "hair",
+    aka: "Melaleuca alternifolia oil",
+    sub: "Antimicrobial essential oil for dandruff and itchy scalp",
+    type: "Essential Oil",
+    bestFor: "Dandruff, Itchy scalp, Scalp acne, Oily scalp",
+    facePct: "Dilute to 5% max in carrier oil or shampoo",
+    bodyPct: "5 drops per 30ml carrier or shampoo",
+    howOften: "2\u20133x per week as scalp treatment or in shampoo",
+    dontMix: ["NEVER apply neat \u2014 strong irritant", "Avoid in pregnancy", "Keep away from pets (toxic to cats)"],
+    product: "Paul Mitchell Tea Tree Special Shampoo",
+    productReview: "30,000+ reviews, 4.5 stars. Cult favorite. The 2002 study showed 5% tea tree oil shampoo reduced dandruff by 41% over 4 weeks.",
+    productNote: "Look for: 5% tea tree oil in shampoo (the studied concentration). For DIY: 5 drops essential oil per 30ml carrier or shampoo. Don't exceed 5% \u2014 irritates.",
+    pros: ["Clinically proven for dandruff", "Antimicrobial and antifungal", "Soothes itchy scalp fast", "Cheap to use as add-in"],
+    cons: ["Strong smell", "Must dilute (skin irritant neat)", "Can dry out very dry hair", "Toxic to cats \u2014 careful at home"],
+    expect: [
+      { period: "Wash 1\u20132", desc: "Scalp feels cleaner. Itchiness reduces noticeably." },
+      { period: "Week 2\u20134", desc: "Flaking reduces significantly. Scalp odor improves." },
+      { period: "Week 4+", desc: "Dandruff under control. Maintain with weekly use." }
+    ]
+  },
+  {
+    name: "Coconut Oil",
+    category: "hair",
+    aka: "Cocos nucifera oil, virgin coconut oil",
+    sub: "Penetrates the hair shaft \u2014 best for damage prevention",
+    type: "Carrier Oil",
+    bestFor: "Damage prevention, Pre-wash treatment, Dry ends, High porosity hair",
+    facePct: "Pure on lengths and ends",
+    bodyPct: "Pure as pre-wash mask",
+    howOften: "1\u20132x per week, 30 min before wash",
+    dontMix: ["Avoid if you have low porosity hair (sits on top, makes hair greasy)", "Don't apply daily \u2014 buildup"],
+    product: "Coco & Co. Pure Coconut Oil or Kapuluan Virgin Coconut Oil",
+    productReview: "Studied in the 2003 Journal of Cosmetic Science \u2014 coconut oil reduced protein loss in hair better than mineral or sunflower oil.",
+    productNote: "Look for: virgin or extra-virgin, cold-pressed, organic. Should solidify below 24\u00b0C. Refined coconut oil works but has fewer benefits. Don't use as a leave-in if low porosity.",
+    pros: ["Penetrates hair shaft (most oils don't)", "Reduces protein loss when used pre-wash", "Cheap and easy to find", "Multipurpose (skin, cooking, hair)"],
+    cons: ["Can dry out low porosity hair", "Greasy if you use too much", "Solid below 24\u00b0C", "Some people get scalp buildup"],
+    expect: [
+      { period: "Wash 1", desc: "Hair feels softer and less frizzy after wash. Especially noticeable on damaged ends." },
+      { period: "Week 2\u20134", desc: "Less breakage when brushing. Color-treated hair holds longer." },
+      { period: "Week 6+", desc: "Healthier-looking ends. Significantly less heat/wash damage." }
+    ]
+  },
+  {
+    name: "Caffeine",
+    category: "hair",
+    aka: "Topical caffeine, scalp caffeine serum",
+    sub: "Stimulant that blocks DHT and extends hair growth phase",
+    type: "Active / Stimulant",
+    bestFor: "Hair fall, Thinning, Pattern hair loss (early stage)",
+    facePct: "0.2\u20132% in scalp serums/shampoos",
+    bodyPct: "Apply directly to scalp",
+    howOften: "Daily as serum, or in shampoo 3\u20134x per week",
+    dontMix: ["Compatible with most ingredients including minoxidil"],
+    product: "Alpecin Caffeine Shampoo C1",
+    productReview: "20,000+ reviews, 4.3 stars. German brand, EU-regulated. Backed by studies from the University of Jena showing caffeine penetrates the hair follicle in 2 minutes.",
+    productNote: "Look for: caffeine listed in top 5 ingredients (not just for color). Leave shampoo on for 2 minutes before rinsing (studied dwell time). Serums work better than shampoos alone.",
+    pros: ["Blocks DHT (the hair loss hormone)", "Extends anagen (growth) phase", "Affordable and accessible", "Safe long-term"],
+    cons: ["Mild results compared to minoxidil", "Slow (3\u20136 months)", "Needs consistent daily use", "Less effective for advanced hair loss"],
+    expect: [
+      { period: "Week 2\u20134", desc: "Scalp feels stimulated. Slight reduction in shedding." },
+      { period: "Month 2\u20133", desc: "Hair feels thicker at the root. Less hair on the pillow." },
+      { period: "Month 4\u20136", desc: "Visible density improvement, particularly in early-stage thinning." }
+    ]
+  },
+  {
+    name: "Ketoconazole",
+    category: "hair",
+    aka: "Anti-fungal active, Nizoral active ingredient",
+    sub: "Anti-fungal that doubles as a hair growth treatment",
+    type: "Anti-Fungal / Active",
+    bestFor: "Dandruff, Seborrheic dermatitis, Scalp acne, Hair fall (DHT-related)",
+    facePct: "1% (OTC), 2% (prescription)",
+    bodyPct: "Apply to scalp, leave 3\u20135 min before rinse",
+    howOften: "2\u20133x per week (anti-fungal alone is enough)",
+    dontMix: ["Generally safe \u2014 don't overuse (can dry hair)"],
+    product: "Nizoral Anti-Dandruff Shampoo (1% ketoconazole)",
+    productReview: "50,000+ reviews, 4.5 stars. The gold standard for dandruff. Multiple studies show 2% reduces hair shedding comparable to 2% minoxidil.",
+    productNote: "Look for: 1% ketoconazole (OTC) or get 2% prescription if 1% isn't enough. Use 2\u20133x per week max \u2014 daily is too drying. Leave on scalp for 3\u20135 min before rinsing.",
+    pros: ["Treats dandruff fast", "Doubles as a hair loss treatment", "Reduces scalp inflammation", "Well-studied for both uses"],
+    cons: ["Can dry hair if overused", "Some shedding in the first 1\u20132 weeks (normal)", "Smell isn't great", "Not safe to use daily"],
+    expect: [
+      { period: "Wash 1\u20132", desc: "Itchiness drops fast. Flaking reduces significantly." },
+      { period: "Week 4\u20136", desc: "Dandruff fully under control. Less shedding." },
+      { period: "Month 3+", desc: "Visible density improvement in hair fall users. Maintain at 2x per week long-term." }
+    ]
+  }
+];
+
+let concerns = [
+  {
+    name: "Keratosis Pilaris",
+    aka: "KP, \"chicken skin,\" those rough bumps on your arms",
+    sub: "Rough bumpy skin on arms and thighs",
+    desc: "Those small, rough bumps on your upper arms? That\u2019s keratosis pilaris. Super common, totally harmless, and very treatable. It happens when dead skin cells plug your hair follicles instead of shedding normally. It\u2019s genetic, so you can manage it but not permanently \"cure\" it \u2014 and that\u2019s okay.",
+    routine: [
+      { step: "Gentle Body Wash", why: "Harsh soaps strip your skin and make KP worse.", product: "CeraVe Hydrating Body Wash", lookFor: "Look for: ceramides, no sulfates (SLS/SLES)", freq: "Daily" },
+      { step: "Chemical Exfoliant", why: "Dissolves the keratin plugs clogging your follicles.", product: "AmLactin Daily 12% Lactic Acid Lotion", lookFor: "Look for: 10\u201312% lactic acid or 2% salicylic acid", freq: "Daily" },
+      { step: "Rich Moisturizer", why: "Softens the bumps and keeps skin from drying out.", product: "Eucerin UreaRepair Plus 10% Urea Cream", lookFor: "Look for: urea (10%), ceramides, or glycerin", freq: "Daily, after exfoliant" },
+      { step: "Sunscreen on Exposed Areas", why: "Chemical exfoliants make skin sun-sensitive.", product: "Any body SPF 30+", lookFor: "Look for: broad spectrum, fragrance-free", freq: "Daily if arms are exposed" }
+    ],
+    timeline: [
+      { period: "Week 1\u20132", desc: "Skin starts feeling smoother to the touch. Less rough." },
+      { period: "Week 4\u20136", desc: "Visible reduction in bumps. Redness starts fading." },
+      { period: "Week 8+", desc: "Significant improvement. Maintain the routine \u2014 KP comes back if you stop." }
+    ],
+    closing: "Your skin didn\u2019t get this way overnight. Give it time. KP is genetic, so think of this as a maintenance routine, not a one-time fix.",
+    severe: false
+  },
+  {
+    name: "Fungal Acne",
+    aka: "Pityrosporum folliculitis, Malassezia folliculitis",
+    sub: "Itchy uniform bumps, often misdiagnosed",
+    desc: "Here\u2019s the thing about fungal acne \u2014 it\u2019s not actually acne at all. It\u2019s a yeast overgrowth in your hair follicles. That\u2019s why your regular acne products aren\u2019t working. The telltale signs: uniform small bumps (all the same size), often itchy, usually on your forehead, chest, or back, and they get worse with sweat and humidity.",
+    routine: [
+      { step: "Anti-Fungal Cleanser", why: "Kills the Malassezia yeast causing the breakout.", product: "Nizoral Anti-Dandruff Shampoo (as a body/face wash)", lookFor: "Look for: ketoconazole 1\u20132%, or zinc pyrithione", freq: "Daily for 2 weeks, then 2\u20133x/week" },
+      { step: "Fungal-Safe Moisturizer", why: "Many moisturizers feed the yeast. You need one that doesn\u2019t.", product: "Hada Labo Skin Plumping Gel Cream", lookFor: "Look for: no fatty acids (oleic, lauric), no fermented ingredients, no oils (except MCT/squalane)", freq: "Daily" },
+      { step: "Chemical Exfoliant", why: "Keeps follicles clear so yeast can\u2019t build up.", product: "Stridex Maximum Strength Pads (2% BHA)", lookFor: "Look for: salicylic acid, fungal-safe formula", freq: "Every other day" }
+    ],
+    timeline: [
+      { period: "Week 1\u20132", desc: "Itching reduces noticeably. New bumps slow down." },
+      { period: "Week 4\u20136", desc: "Existing bumps flatten. Skin texture smoothing out." },
+      { period: "Week 8+", desc: "Mostly clear. Keep up maintenance or it can return in humid months." }
+    ],
+    closing: "Your skin didn\u2019t get this way overnight. Give it time. The key with fungal acne is the anti-fungal treatment AND switching to fungal-safe products.",
+    severe: true,
+    dermNote: "If the bumps are persistent, very inflamed, or spreading, see a dermatologist. They can prescribe oral antifungals (fluconazole) which work much faster than topicals."
+  },
+  {
+    name: "Perioral Dermatitis",
+    aka: "PD, that red rash around your mouth and nose",
+    sub: "Red bumpy rash around mouth and nose",
+    desc: "This one\u2019s frustrating. Perioral dermatitis is a red, bumpy, sometimes flaky rash that shows up around your mouth, nose, or eyes. It often gets worse when you try to treat it with regular skincare \u2014 especially steroids, which are the worst thing you can put on it. The cause isn\u2019t fully understood, but it\u2019s linked to overuse of topical steroids, heavy creams, fluoride toothpaste, and SLS.",
+    routine: [
+      { step: "Stripped-Back Cleanser", why: "Your skin barrier is compromised. Less is more right now.", product: "Vanicream Gentle Facial Cleanser", lookFor: "Look for: no SLS, no fragrance, no essential oils", freq: "Daily, gentle application" },
+      { step: "Azelaic Acid", why: "Anti-inflammatory and anti-bacterial without disrupting your barrier further.", product: "The Ordinary Azelaic Acid Suspension 10%", lookFor: "Look for: 10%+ azelaic acid", freq: "2x daily" },
+      { step: "Minimal Moisturizer", why: "Heavy creams can aggravate PD. Keep it simple.", product: "La Roche-Posay Toleriane Ultra Cream", lookFor: "Look for: minimal ingredients, no steroids, no fragrance", freq: "Daily" },
+      { step: "Zinc Sunscreen", why: "Chemical sunscreens can irritate PD. Zinc helps calm it.", product: "EltaMD UV Clear SPF 46", lookFor: "Look for: zinc oxide as active, fragrance-free", freq: "Daily" }
+    ],
+    timeline: [
+      { period: "Week 1\u20132", desc: "May get slightly worse before better (especially if stopping steroids). Stay the course." },
+      { period: "Week 4\u20136", desc: "Redness starts to calm. Bumps flatten." },
+      { period: "Week 8\u201312", desc: "Significant improvement. Some cases take 3+ months." }
+    ],
+    closing: "Your skin didn\u2019t get this way overnight. Give it time. PD is notoriously slow to heal, but it does heal. Resist the urge to pile on products.",
+    severe: true,
+    dermNote: "Perioral dermatitis often needs prescription treatment. A derm can prescribe topical metronidazole, low-dose doxycycline, or tacrolimus \u2014 all much more effective than OTC options alone. Please see one if it\u2019s not improving in 4\u20136 weeks."
+  },
+  {
+    name: "Sebaceous Filaments",
+    aka: "Those tiny dots on your nose (they\u2019re not blackheads)",
+    sub: "Tiny dots on nose often confused with blackheads",
+    desc: "Good news: those tiny grayish dots on your nose are probably not blackheads. They\u2019re sebaceous filaments \u2014 a completely normal part of how your skin functions. They help oil travel to the surface. You can\u2019t permanently remove them (they refill in about 30 days), but you can make them way less visible.",
+    routine: [
+      { step: "Oil Cleanser", why: "Dissolves the sebum in your pores without stripping. Like dissolves like.", product: "DHC Deep Cleansing Oil or Kose Softymo Speedy Cleansing Oil", lookFor: "Look for: mineral oil or plant-based oils, no fragrance", freq: "Daily, PM (double cleanse)" },
+      { step: "BHA Exfoliant", why: "Gets inside pores and loosens the buildup that makes filaments visible.", product: "Paula\u2019s Choice 2% BHA Liquid Exfoliant", lookFor: "Look for: 2% salicylic acid at pH 3\u20134", freq: "Daily or every other day, PM" },
+      { step: "Niacinamide", why: "Regulates oil production so filaments refill more slowly.", product: "The Ordinary Niacinamide 10% + Zinc 1%", lookFor: "Look for: 5\u201310% niacinamide", freq: "Daily, AM" },
+      { step: "Lightweight Moisturizer", why: "Don\u2019t skip this \u2014 dehydrated skin produces more oil, making filaments worse.", product: "Neutrogena Hydro Boost Gel-Cream", lookFor: "Look for: hyaluronic acid, oil-free, non-comedogenic", freq: "Daily" }
+    ],
+    timeline: [
+      { period: "Week 1\u20132", desc: "Pores start looking cleaner. Oil production begins to balance." },
+      { period: "Week 4\u20136", desc: "Filaments noticeably smaller. Nose looks smoother." },
+      { period: "Week 8+", desc: "Minimal appearance. Maintain routine \u2014 they\u2019ll come back if you stop." }
+    ],
+    closing: "Your skin didn\u2019t get this way overnight. Give it time. And honestly? Some filaments are just part of having skin. The goal is less visible, not invisible.",
+    severe: false
+  },
+  {
+    name: "Textured Forehead",
+    aka: "Forehead bumps, closed comedones, subclinical acne",
+    sub: "Small colorless bumps, not quite acne",
+    desc: "Those tiny, colorless bumps you can mostly see in side lighting? They\u2019re usually closed comedones \u2014 pores clogged just under the surface. They\u2019re not inflamed enough to be full-blown acne, which makes them annoyingly hard to treat with typical acne products. Common culprits: heavy hair products, over-moisturizing, or a damaged moisture barrier.",
+    routine: [
+      { step: "Gentle Cleanser", why: "Remove hair product residue and excess oil without stripping.", product: "La Roche-Posay Toleriane Hydrating Gentle Cleanser", lookFor: "Look for: non-comedogenic, no SLS", freq: "Twice daily" },
+      { step: "BHA or AHA Exfoliant", why: "Unclogs the closed comedones from within.", product: "Paula\u2019s Choice 2% BHA Liquid Exfoliant", lookFor: "Look for: 2% salicylic acid or 5\u20138% glycolic acid", freq: "Every other day, PM" },
+      { step: "Lightweight, Non-Comedogenic Moisturizer", why: "Heavy creams contribute to clogging. Keep it light.", product: "CeraVe PM Facial Moisturizing Lotion", lookFor: "Look for: niacinamide, ceramides, non-comedogenic label", freq: "Daily" }
+    ],
+    timeline: [
+      { period: "Week 1\u20132", desc: "Some bumps may surface as purging. This is normal." },
+      { period: "Week 4\u20136", desc: "Texture starts smoothing. Fewer new bumps forming." },
+      { period: "Week 8+", desc: "Forehead significantly smoother. Check if hair products are a trigger." }
+    ],
+    closing: "Your skin didn\u2019t get this way overnight. Give it time. Also, check your hair products \u2014 pomades, oils, and heavy conditioners that touch your forehead are a very common cause.",
+    severe: false
+  },
+  {
+    name: "Strawberry Legs",
+    aka: "Dark pores on legs, keratosis pilaris on legs, post-shave dots",
+    sub: "Dark pores/dots visible on legs after shaving",
+    desc: "Those dark dots on your legs that look like strawberry seeds? They\u2019re usually a combo of clogged pores, ingrown hairs, and visible hair follicles. Shaving can make them worse by irritating the follicle opening. The good news: a solid routine makes a huge difference.",
+    routine: [
+      { step: "Gentle Body Wash", why: "Prep your skin without irritation.", product: "Dove Sensitive Skin Body Wash", lookFor: "Look for: fragrance-free, no SLS", freq: "Daily" },
+      { step: "Chemical Exfoliant", why: "Dissolves dead skin and debris in the follicle that causes dark dots.", product: "CeraVe SA Cream for Rough & Bumpy Skin", lookFor: "Look for: salicylic acid + lactic acid combo, or glycolic acid 10%+", freq: "Daily" },
+      { step: "Proper Shaving Technique", why: "Wrong technique is half the problem.", product: "A sharp single-blade razor + shaving oil", lookFor: "Look for: shave WITH the grain, never dry shave, use shave oil not foam", freq: "Replace razor frequently" },
+      { step: "Moisturize Immediately After", why: "Locks in hydration and soothes freshly exfoliated skin.", product: "Eucerin Advanced Repair Cream", lookFor: "Look for: ceramides, urea, or glycerin", freq: "Daily" }
+    ],
+    timeline: [
+      { period: "Week 1\u20132", desc: "Skin feels smoother. Dots start fading slightly." },
+      { period: "Week 4\u20136", desc: "Noticeable improvement. Dark dots less prominent." },
+      { period: "Week 8+", desc: "Significant reduction. Legs look much more even-toned." }
+    ],
+    closing: "Your skin didn\u2019t get this way overnight. Give it time. Consistency with the chemical exfoliant is the single biggest game-changer here.",
+    severe: false
+  },
+  {
+    name: "Milia",
+    aka: "Milk spots, tiny white keratin cysts",
+    sub: "Tiny hard white bumps that won\u2019t pop",
+    desc: "Those tiny, hard white bumps that no amount of squeezing will remove? Those are milia \u2014 little cysts of keratin trapped under the skin. They\u2019re not pimples (there\u2019s no pore opening to extract from), which is why popping them doesn\u2019t work and just damages your skin. They\u2019re common around the eyes, cheeks, and forehead.",
+    routine: [
+      { step: "Gentle Retinol", why: "Speeds up cell turnover so the trapped keratin can work its way out.", product: "CeraVe Resurfacing Retinol Serum", lookFor: "Look for: encapsulated retinol, start 2\u20133x/week", freq: "Every other night, build up" },
+      { step: "AHA Exfoliant", why: "Helps remove the layer of skin trapping the keratin cyst.", product: "The Ordinary Glycolic Acid 7% Toning Solution", lookFor: "Look for: glycolic acid 5\u201310%, avoid eye area", freq: "2\u20133x per week, PM" },
+      { step: "Lightweight Moisturizer", why: "Heavy, occlusive creams can contribute to milia formation.", product: "Neutrogena Hydro Boost Gel-Cream", lookFor: "Look for: gel-cream texture, non-comedogenic, not too heavy", freq: "Daily" }
+    ],
+    timeline: [
+      { period: "Week 2\u20134", desc: "Skin texture improves. Milia may start to feel less raised." },
+      { period: "Week 6\u20138", desc: "Some milia resolve on their own as turnover increases." },
+      { period: "Week 10+", desc: "Remaining stubborn milia may need professional extraction." }
+    ],
+    closing: "Your skin didn\u2019t get this way overnight. Give it time. Some milia are stubborn enough that they need a professional to remove them with a tiny needle \u2014 and that\u2019s totally fine and quick.",
+    severe: false,
+    dermNote: "If milia persist after 2\u20133 months of retinol + AHA, a dermatologist or esthetician can extract them in minutes with a sterile needle. It\u2019s painless and gives instant results."
+  },
+  {
+    name: "Post-Inflammatory Hyperpigmentation",
+    aka: "PIH, dark marks, acne scars (the flat kind)",
+    sub: "Dark marks left after acne or injury heals",
+    desc: "Those dark spots left behind after a pimple heals aren\u2019t actually scars \u2014 they\u2019re post-inflammatory hyperpigmentation. Your skin overproduced melanin during the healing process. The reassuring part: PIH is temporary. It will fade on its own, but the right routine can cut that timeline from 6\u201312 months down to 2\u20133.",
+    routine: [
+      { step: "Vitamin C Serum", why: "Inhibits excess melanin production and brightens existing dark spots.", product: "Timeless 20% Vitamin C + E + Ferulic Acid Serum", lookFor: "Look for: L-Ascorbic Acid 10\u201320% at low pH with Vitamin E", freq: "Daily, AM" },
+      { step: "Azelaic Acid", why: "Targets pigmented cells specifically. One of the best ingredients for PIH.", product: "Paula\u2019s Choice 10% Azelaic Acid Booster", lookFor: "Look for: 10%+ azelaic acid", freq: "Daily, PM" },
+      { step: "Sunscreen (Non-Negotiable)", why: "UV exposure makes dark marks darker and last longer. This is the most important step.", product: "Supergoop Unseen Sunscreen SPF 40", lookFor: "Look for: SPF 30+ broad spectrum, reapply every 2 hours in sun", freq: "Daily, every single day" },
+      { step: "Gentle Exfoliant", why: "Removes the pigmented surface cells faster.", product: "The Ordinary Lactic Acid 10% + HA", lookFor: "Look for: lactic or glycolic acid, don\u2019t overdo it", freq: "2\u20133x per week, PM" }
+    ],
+    timeline: [
+      { period: "Week 2\u20134", desc: "Marks start shifting from dark brown to a lighter shade." },
+      { period: "Week 6\u20138", desc: "Noticeable fading. Spots becoming less defined." },
+      { period: "Week 12+", desc: "Most marks significantly faded. Deep ones may take longer." }
+    ],
+    closing: "Your skin didn\u2019t get this way overnight. Give it time. And seriously \u2014 sunscreen is doing 50% of the work here. Don\u2019t skip it.",
+    severe: false
+  },
+  {
+    name: "Dehydrated Oily Skin",
+    aka: "The oily-yet-tight paradox, combo confusion",
+    sub: "Skin feels oily AND tight/dry simultaneously",
+    desc: "Your skin is oily on the surface but feels tight and dry underneath? That\u2019s dehydration, not oiliness. Your skin barrier is damaged, so it loses water (dehydration) and overproduces oil to compensate. The fix is counterintuitive: you need to add more moisture, not strip more oil. Most people with this condition have been over-cleansing and under-moisturizing.",
+    routine: [
+      { step: "Hydrating Cleanser", why: "Stop stripping your skin. Foaming cleansers are making this worse.", product: "CeraVe Hydrating Facial Cleanser", lookFor: "Look for: cream or milky texture, ceramides, no foaming sulfates", freq: "Twice daily" },
+      { step: "Hydrating Toner/Essence", why: "Adds a layer of water-based hydration before your moisturizer.", product: "Hada Labo Gokujyun Premium Lotion", lookFor: "Look for: hyaluronic acid, glycerin, no alcohol", freq: "Twice daily on damp skin" },
+      { step: "Niacinamide", why: "Regulates oil production while strengthening the barrier.", product: "The Ordinary Niacinamide 10% + Zinc 1%", lookFor: "Look for: 5\u201310% niacinamide", freq: "Daily, AM" },
+      { step: "Barrier-Repair Moisturizer", why: "This is the most important step. Seal in hydration and repair the barrier.", product: "Vanicream Moisturizing Cream or CeraVe Moisturizing Cream", lookFor: "Look for: ceramides, cholesterol, fatty acids \u2014 barrier-repair ingredients", freq: "Twice daily, don\u2019t skip" }
+    ],
+    timeline: [
+      { period: "Week 1\u20132", desc: "Skin feels less tight. Oil production may temporarily increase (that\u2019s okay)." },
+      { period: "Week 4\u20136", desc: "Oil production starts normalizing. Skin feels more comfortable." },
+      { period: "Week 8+", desc: "Barrier largely repaired. Skin is hydrated, oil is balanced, that \u2018tight-but-shiny\u2019 feeling is gone." }
+    ],
+    closing: "Your skin didn\u2019t get this way overnight. Give it time. The hardest part is trusting the process \u2014 putting moisturizer on oily skin feels wrong, but it\u2019s exactly what your skin needs.",
+    severe: false
+  },
+  {
+    name: "Crepey Neck Skin",
+    aka: "Tech neck, turkey neck, neck aging",
+    sub: "Thin, wrinkled texture on neck from aging/sun",
+    desc: "The skin on your neck is thinner and has fewer oil glands than your face, which means it ages faster \u2014 especially if it\u2019s been getting sun exposure without sunscreen (which, let\u2019s be honest, most necks have). The crepey texture comes from collagen and elastin breakdown. You can meaningfully improve it, but it requires consistency and patience.",
+    routine: [
+      { step: "Gentle Retinol (Neck-Specific)", why: "Boosts collagen production, which is exactly what crepey skin lacks.", product: "La Roche-Posay Retinol B3 Serum or StriVectin Tighten & Lift Neck Cream", lookFor: "Look for: retinol 0.1\u20130.3% to start (neck skin is sensitive), peptides are a plus", freq: "Every other night, build to nightly" },
+      { step: "Peptide Serum", why: "Peptides signal your skin to produce more collagen and elastin.", product: "The Ordinary Multi-Peptide + HA Serum (Buffet)", lookFor: "Look for: Matrixyl, copper peptides, or palmitoyl tripeptide", freq: "Daily, AM" },
+      { step: "Rich Moisturizer", why: "Neck skin needs more moisture than face. Don\u2019t skimp.", product: "CeraVe Moisturizing Cream", lookFor: "Look for: ceramides, hyaluronic acid, shea butter \u2014 something rich", freq: "Twice daily" },
+      { step: "Sunscreen (Critical)", why: "The neck gets constant sun. This prevents further damage.", product: "EltaMD UV Lotion SPF 30+", lookFor: "Look for: broad spectrum, apply down to collarbone", freq: "Daily, reapply if exposed" }
+    ],
+    timeline: [
+      { period: "Week 2\u20134", desc: "Skin feels more hydrated and supple. Surface texture softens." },
+      { period: "Week 8\u201312", desc: "Fine lines start to diminish. Skin looks less papery." },
+      { period: "Month 4\u20136", desc: "Noticeable improvement in firmness and texture. Collagen rebuilding takes time." }
+    ],
+    closing: "Your skin didn\u2019t get this way overnight. Give it time. Neck skin responds slower than face skin, but it does respond. Start gentle \u2014 neck skin irritates easily.",
+    severe: false,
+    dermNote: "For significant crepey skin, a dermatologist can offer treatments like micro-needling, fractional laser, or ultrasound therapy (Ultherapy) that stimulate collagen at a deeper level than topicals can reach."
+  },
+  {
+    name: "Dandruff",
+    category: "hair",
+    aka: "Pityriasis simplex capillitii, flaky scalp",
+    sub: "White flakes, itchy scalp, often misdiagnosed",
+    desc: "Dandruff is almost always caused by Malassezia — a yeast that lives on everyone’s scalp but overgrows in some people. The flakes are dead skin cells reacting to it. Regular shampoo won’t fix this — you need an anti-fungal. Important: if your flakes are dry and small with no oily scalp, it might actually be dry scalp (different fix). True dandruff = greasy flakes + itchy + sometimes red.",
+    routine: [
+      { step: "Anti-Fungal Shampoo", why: "Kills the Malassezia yeast — the actual cause. This is the only step that addresses the root.", product: "Nizoral Anti-Dandruff Shampoo (1% ketoconazole)", lookFor: "Look for: ketoconazole 1–2%, zinc pyrithione 1–2%, or selenium sulfide. Leave on scalp 3–5 minutes before rinsing.", freq: "2–3x per week" },
+      { step: "Tea Tree or Rosemary Scalp Treatment", why: "Antimicrobial reinforcement between anti-fungal washes. Soothes itch.", product: "Paul Mitchell Tea Tree Special Shampoo (alternate days)", lookFor: "Look for: 5% tea tree oil OR add 5 drops tea tree essential oil to 30ml carrier oil", freq: "Between anti-fungal washes" },
+      { step: "Gentle Hydrating Conditioner (lengths only)", why: "Anti-fungal shampoos can be drying. Conditioner stops your hair feeling like straw.", product: "Any sulfate-free conditioner", lookFor: "Look for: silicone-free if you do co-washing, sulfate-free, apply to lengths only — keep off scalp", freq: "Every wash" },
+      { step: "Cool Water Rinse + Brush Daily", why: "Hot water aggravates Malassezia. Brushing distributes natural oils and dislodges flakes.", product: "A boar bristle brush", lookFor: "Look for: boar bristle (not synthetic) for distributing scalp oils", freq: "Daily" }
+    ],
+    timeline: [
+      { period: "Wash 1–2", desc: "Itching reduces noticeably within 24 hours of first anti-fungal wash." },
+      { period: "Week 2–4", desc: "Flaking reduces by 70–80%. Scalp feels cleaner, less greasy." },
+      { period: "Week 6+", desc: "Dandruff under control. Drop to maintenance frequency (1–2x per week)." }
+    ],
+    closing: "Your scalp didn’t get this way overnight. Give it time. Dandruff comes back if you stop — think of this as a long-term maintenance routine, not a one-time fix.",
+    severe: false,
+    dermNote: "If flaking is severe, accompanied by visible redness or scaling that spreads (face, ears, eyebrows), see a dermatologist. It might be seborrheic dermatitis, which needs prescription-strength treatment."
+  },
+  {
+    name: "Hair Fall / Thinning",
+    category: "hair",
+    aka: "Telogen effluvium, androgenetic alopecia, hair loss",
+    sub: "Shedding more than 100 hairs/day or visibly thinner parting",
+    desc: "Some shedding is normal (50–100 hairs a day). What’s not normal: a visibly wider parting, more hair on your pillow than usual, or seeing scalp where you didn’t before. The most common causes: hormonal (post-pregnancy, PCOS), genetic (androgenetic alopecia), stress, iron/vitamin D deficiency, or thyroid issues. A good topical routine helps — but if it’s hormonal or deficiency-based, you need to address that root cause too.",
+    routine: [
+      { step: "Rosemary Oil Scalp Massage", why: "The 2015 study showed rosemary oil matched minoxidil 2% over 6 months. Massage also increases blood flow.", product: "Mielle Organics Rosemary Mint Scalp Oil", lookFor: "Look for: real rosemary essential oil, diluted in jojoba or castor base. Massage for 5 minutes.", freq: "2–3x per week, 30 min before wash" },
+      { step: "Caffeine or Ketoconazole Shampoo", why: "Both block DHT (the hair-loss hormone) and reduce shedding.", product: "Alpecin Caffeine Shampoo C1 or Nizoral", lookFor: "Look for: caffeine in top 5 ingredients OR ketoconazole 1%+. Leave on scalp 2 minutes.", freq: "3–4x per week" },
+      { step: "Onion Oil Treatment (weekly)", why: "Backed by the 2002 study showing regrowth in alopecia patients. Sulfur strengthens hair.", product: "Mamaearth Onion Hair Oil", lookFor: "Look for: real onion extract (oniony smell = real). Mix with castor oil for thinning edges.", freq: "1x per week, overnight or 2 hours before wash" },
+      { step: "Get Bloodwork Done", why: "Iron, ferritin, vitamin D, and thyroid (TSH) deficiencies are the most common silent causes.", product: "A basic blood panel from your GP", lookFor: "Look for: serum ferritin (not just iron), 25-OH Vitamin D, TSH + Free T4, B12", freq: "Once, then yearly" }
+    ],
+    timeline: [
+      { period: "Week 2–4", desc: "Shedding starts reducing. Scalp feels healthier and stimulated." },
+      { period: "Month 2–3", desc: "New baby hairs visible at temples and crown. Less hair on pillow." },
+      { period: "Month 4–6", desc: "Visible density improvement. The rosemary study showed maximum results around month 6." }
+    ],
+    closing: "Hair grows about 1cm a month — so any regimen needs at least 3–6 months before you can judge it. Take photos at the start. You’ll forget how it looked.",
+    severe: true,
+    dermNote: "If you’re losing hair in patches (alopecia areata), shedding sudden handfuls, or seeing significant thinning, see a dermatologist or trichologist. You may need finasteride, minoxidil, PRP, or treatment for an underlying condition. Don’t lose months to topicals that won’t address the root."
+  },
+  {
+    name: "Dry Frizzy Hair",
+    category: "hair",
+    aka: "Damaged hair, high porosity, lifeless hair",
+    sub: "Hair feels straw-like, frizzes in humidity, won’t hold moisture",
+    desc: "Frizzy, dry hair usually means high porosity — your hair cuticle is raised, so moisture rushes in and rushes out. It’s often caused by heat damage, color-treating, hard water, or just genetics (especially curly/coily hair). The fix isn’t more oil. The fix is sealing in moisture properly and stopping further damage.",
+    routine: [
+      { step: "Pre-Wash Coconut Oil Mask", why: "Coconut oil is the only oil studied to actually penetrate the hair shaft and reduce protein loss during washing.", product: "Cold-pressed virgin coconut oil", lookFor: "Look for: organic, virgin, cold-pressed. Apply to lengths only (skip scalp if low porosity).", freq: "1–2x per week, 30 min before shampooing" },
+      { step: "Sulfate-Free Shampoo", why: "Sulfates strip natural oils — exactly what damaged hair can’t afford to lose.", product: "Olaplex No.4 Bond Maintenance Shampoo", lookFor: "Look for: sulfate-free (no SLS/SLES), with proteins or bond builders. Shampoo scalp only, not lengths.", freq: "2–3x per week (less is more for dry hair)" },
+      { step: "Deep Conditioner Mask", why: "Restores the moisture the cuticle isn’t holding. Should sit in for 10+ minutes.", product: "Briogeo Don’t Despair, Repair Deep Conditioning Mask", lookFor: "Look for: ceramides, panthenol, hydrolyzed proteins, fatty alcohols (cetyl/stearyl). Sit under a shower cap for 15–30 min.", freq: "1x per week, replacing regular conditioner" },
+      { step: "Argan Oil on Damp Lengths", why: "Seals in the moisture you just added. Argan is lightweight, won’t weigh hair down.", product: "Josie Maran 100% Pure Argan Oil or any pure argan oil", lookFor: "Look for: 100% pure argan oil, not a blend. 2–3 drops on damp lengths only.", freq: "After every wash, on damp hair" }
+    ],
+    timeline: [
+      { period: "Wash 1", desc: "Hair instantly feels softer and looks shinier. Frizz reduced." },
+      { period: "Week 2–4", desc: "Less breakage when brushing. Hair holds moisture longer between washes." },
+      { period: "Week 6+", desc: "Cuticle healthier. Hair feels strong, less frizzy in humidity, holds styles better." }
+    ],
+    closing: "Trim your ends. Seriously. No amount of oil will fix split ends — they’ll keep splitting up the shaft until you cut them off. Then your routine maintains what’s left.",
+    severe: false
+  },
+  {
+    name: "Oily Scalp",
+    category: "hair",
+    aka: "Greasy scalp, sebum overproduction, slick roots",
+    sub: "Hair looks greasy within 24 hours of washing",
+    desc: "An oily scalp usually means your sebaceous glands are working overtime — often from over-washing (yes, really), heat, hormones, or product buildup. Counterintuitively, washing daily can make it worse by signaling more oil production. The fix is balancing sebum, not stripping it.",
+    routine: [
+      { step: "Clarifying Wash (weekly)", why: "Removes product and oil buildup that signals more oil production.", product: "Neutrogena Anti-Residue Shampoo", lookFor: "Look for: clarifying or chelating shampoo (with EDTA for hard water). Use once a week max.", freq: "1x per week" },
+      { step: "Gentle Sulfate-Free Daily Shampoo", why: "Regular sulfate shampoos strip too much and trigger rebound oil production.", product: "Briogeo Scalp Revival Charcoal + Tea Tree Shampoo", lookFor: "Look for: sulfate-free, with tea tree oil, salicylic acid, or charcoal — gentle but oil-regulating", freq: "Every other day (not daily)" },
+      { step: "Apple Cider Vinegar Rinse", why: "Lowers scalp pH and dissolves buildup. Helps regulate oil production over time.", product: "Bragg’s Organic ACV (mixed 1:4 with water)", lookFor: "Look for: raw, unfiltered ACV. 1 tbsp in a mug of water. Pour over scalp, let sit 2 min, rinse.", freq: "1–2x per week, after shampoo" },
+      { step: "Skip Conditioner on Roots", why: "Conditioner on the scalp = grease city. Always apply mid-length to ends only.", product: "Any lightweight conditioner", lookFor: "Look for: silicone-free if you co-wash often. Apply only from ears down.", freq: "Every wash" }
+    ],
+    timeline: [
+      { period: "Week 1", desc: "Slight transition period — scalp might feel oilier briefly as you reduce washing frequency." },
+      { period: "Week 2–4", desc: "Oil production starts balancing. Hair stays clean longer between washes." },
+      { period: "Week 6+", desc: "Sebum production normalizes. You can probably wash less often than you used to." }
+    ],
+    closing: "The hardest part is washing less. Your scalp learns to over-produce oil if you wash daily. Try washing every other day, then every 3 days. It’s a transition — but it works.",
+    severe: false
+  },
+  {
+    name: "Scalp Acne / Folliculitis",
+    category: "hair",
+    aka: "Pimples on scalp, scalp folliculitis, pityrosporum folliculitis",
+    sub: "Painful or itchy bumps on the scalp",
+    desc: "Bumps on your scalp can be one of two things: bacterial folliculitis (red, often painful) or fungal folliculitis (itchy, uniform bumps). The treatment is different. Common triggers: heavy hair products, sweating without washing, dirty pillowcases, and yeast overgrowth. Avoid picking — it spreads it.",
+    routine: [
+      { step: "Anti-Fungal Shampoo", why: "Most scalp bumps are actually fungal — Malassezia overgrowth. This is the first thing to try.", product: "Nizoral Anti-Dandruff Shampoo (1% ketoconazole)", lookFor: "Look for: ketoconazole 1–2% OR zinc pyrithione 2%. Leave on scalp 5 minutes before rinsing.", freq: "2–3x per week for 4 weeks, then maintenance" },
+      { step: "BHA Scalp Treatment", why: "Salicylic acid clears the follicles where bumps form.", product: "Paula’s Choice 2% BHA Liquid Exfoliant (yes, the same one for face)", lookFor: "Look for: 2% salicylic acid. Apply with cotton pad to scalp partings.", freq: "2–3x per week, before shampoo" },
+      { step: "Stop All Heavy Hair Products", why: "Pomades, oils on the scalp, hair waxes — they clog follicles and feed the yeast.", product: "Switch to lightweight, water-based styling", lookFor: "Look for: ‘non-comedogenic’ if listed, water as the first ingredient, no heavy butters or oils on scalp", freq: "Until bumps resolve" },
+      { step: "Wash Pillowcases Twice a Week", why: "Pillowcases accumulate yeast, bacteria, and oil that re-infect your scalp.", product: "A second set of pillowcases for rotation", lookFor: "Look for: silk or cotton pillowcases; wash on hot water cycle", freq: "2x per week" }
+    ],
+    timeline: [
+      { period: "Week 1–2", desc: "Itching reduces. New bumps slow down forming." },
+      { period: "Week 4–6", desc: "Existing bumps flatten and clear. Scalp feels less inflamed." },
+      { period: "Week 8+", desc: "Mostly clear. Maintain with anti-fungal once a week to prevent recurrence." }
+    ],
+    closing: "Resist the urge to pick or pop scalp bumps. They get infected easily because hair traps moisture and bacteria. Let them resolve with treatment.",
+    severe: true,
+    dermNote: "If bumps are large, painful, oozing, or spreading down your neck/forehead, see a dermatologist. Bacterial folliculitis (different from fungal) needs prescription antibiotics. Don’t waste 8 weeks on anti-fungals if it’s bacterial."
+  },
+  {
+    name: "Dull Lifeless Hair",
+    category: "hair",
+    aka: "No shine, flat hair, lifeless ends",
+    sub: "Hair looks matte, has no light reflection",
+    desc: "Shiny hair = smooth cuticle that reflects light. Dull hair = roughed-up cuticle (from hard water, heat, color, or just buildup). The fix is closing the cuticle back down with the right products and protecting it from further damage. Don’t chase shine with serums alone — fix the cuticle.",
+    routine: [
+      { step: "Chelating/Clarifying Shampoo", why: "Hard water deposits (calcium, magnesium, iron) coat your hair and dull it. Chelating shampoos remove that.", product: "Malibu C Hard Water Wellness Shampoo", lookFor: "Look for: EDTA or vitamin C as a chelator. Use once a month if you have hard water (most cities do).", freq: "Once a month" },
+      { step: "Apple Cider Vinegar Rinse", why: "Smooths and closes the cuticle. Restores pH after shampoo (which is alkaline).", product: "Bragg’s Organic ACV (mixed 1:4 with water)", lookFor: "Look for: raw, unfiltered ACV. 1 tbsp in 250ml water. Pour over hair after shampoo, rinse with cool water.", freq: "1x per week" },
+      { step: "Argan or Squalane Oil on Damp Ends", why: "Seals the cuticle and adds genuine shine — not just a wet look.", product: "Josie Maran 100% Pure Argan Oil", lookFor: "Look for: 100% pure (not ‘argan blend’). 2–3 drops on damp lengths only — never on scalp.", freq: "After every wash" },
+      { step: "Cool Water Final Rinse", why: "Cold water visibly closes the cuticle. Instant shine boost.", product: "Just cold water at the end of your shower", lookFor: "Look for: as cold as you can stand for the last 30 seconds. Yes, it actually works.", freq: "Every wash" }
+    ],
+    timeline: [
+      { period: "Wash 1", desc: "Immediate shine boost after ACV rinse + cold water finish." },
+      { period: "Week 2–4", desc: "Cuticle visibly smoother. Hair catches light better. Frizz reduces." },
+      { period: "Week 6+", desc: "Consistent shine. Hair feels healthier, holds styles better, photographs better." }
+    ],
+    closing: "Shine is mostly about a smooth surface, not ‘shiny products’. Once you fix the cuticle, you won’t need serums to fake it.",
+    severe: false
+  },
+  {
+    name: "Premature Greying",
+    category: "hair",
+    aka: "Greys before 30, premature canities",
+    sub: "Significant greying before your mid-30s",
+    desc: "Premature greying is mostly genetic — if your parents went grey young, you probably will too. But it can be accelerated by vitamin B12 deficiency, copper/iron/zinc deficiency, thyroid issues, smoking, or chronic stress. The harsh truth: once a hair grows in grey, you can’t reverse it. But you can sometimes slow the rate of new greys appearing — especially if a deficiency is part of it.",
+    routine: [
+      { step: "Get Bloodwork", why: "B12, copper, iron, and thyroid deficiencies all contribute to greying. Correct what’s actually low.", product: "A blood panel from your GP", lookFor: "Look for: serum B12, ferritin, TSH, copper, zinc. Supplement only what’s actually low.", freq: "Once, then yearly" },
+      { step: "Bhringraj Oil Scalp Massage", why: "Traditional Ayurvedic remedy. Some evidence it may slow new greying (won’t reverse existing).", product: "Indulekha Bringha Oil or Khadi Bhringraj Hair Oil", lookFor: "Look for: bhringraj as the first ingredient. Massage warm oil into scalp.", freq: "2x per week, overnight" },
+      { step: "Stress Management + Antioxidants", why: "Oxidative stress accelerates greying. Vitamin C, E, selenium help long-term.", product: "Daily walks + antioxidant-rich diet (berries, leafy greens, nuts)", lookFor: "Look for: 7–8 hours of sleep, regular exercise, omega-3s, less smoking/alcohol", freq: "Daily" },
+      { step: "Quit Smoking (if applicable)", why: "Smokers are 2.5x more likely to grey before 30. The mechanism is oxidative damage to melanocytes.", product: "A real quit plan — nicotine patches, support group, GP visit", lookFor: "Look for: a structured quitting program, not ‘cold turkey willpower’", freq: "Until quit" }
+    ],
+    timeline: [
+      { period: "Month 1–2", desc: "If you had a deficiency, fixing it slows new grey production. No visible change yet." },
+      { period: "Month 3–6", desc: "New growth at the roots may show fewer greys (in deficiency-driven cases)." },
+      { period: "Year 1+", desc: "Rate of new greys may slow noticeably. Existing greys remain grey." }
+    ],
+    closing: "Existing grey hair won’t reverse — that’s biology. But what you can do is rule out and fix nutritional causes, manage stress, and quit smoking. Some of the greys you’d have gotten next year won’t appear.",
+    severe: false,
+    dermNote: "If greying is sudden, patchy, or accompanied by other symptoms (fatigue, weight changes, brittle nails), see a doctor. It may indicate thyroid disease, autoimmune conditions, or significant B12 deficiency that needs treatment beyond topicals."
+  },
+  {
+    name: "Split Ends",
+    category: "hair",
+    aka: "Trichoptilosis, frayed ends, hair breakage",
+    sub: "Ends split into 2+ strands, hair won’t grow past a length",
+    desc: "Split ends happen when the protective cuticle wears away and the inner cortex fractures. Once split, the only real fix is to cut them off — products that claim to ‘seal’ splits just temporarily glue them shut. They re-split within days. The real strategy: prevent new splits + trim regularly.",
+    routine: [
+      { step: "Trim Every 8–12 Weeks", why: "There is no skincare for split ends. You must cut them off, or they split further up the shaft.", product: "A hairstylist — or ‘dusting’ the ends yourself with sharp hair scissors", lookFor: "Look for: ‘dusting’ — cutting tiny bits off only the splits, not length. Trims = 1cm max.", freq: "Every 8–12 weeks" },
+      { step: "Bond-Building Treatment", why: "Olaplex-style treatments rebuild broken hair bonds, preventing new splits from forming.", product: "Olaplex No.3 Hair Perfector", lookFor: "Look for: ‘bis-aminopropyl diglycol dimaleate’ (the patented Olaplex molecule) — or similar bond builders like K18", freq: "Once a week" },
+      { step: "Stop Heat Tools (or always use heat protectant)", why: "Heat damage is the #1 cause of new splits. Every hot tool fries the cuticle a little.", product: "Heat protectant spray or air-drying", lookFor: "Look for: heat protectants with silicones (cyclomethicone, dimethicone) + bond protection (Olaplex No.6). Or skip heat 2/3 of the week.", freq: "Every time you use heat" },
+      { step: "Silk Pillowcase + Silk Hair Tie", why: "Cotton causes friction breakage at the ends. Silk lets hair slide instead of snag.", product: "A 100% mulberry silk pillowcase", lookFor: "Look for: 22+ momme mulberry silk. Not ‘satin’ (that’s polyester). Snag-free silk scrunchies for tying hair up.", freq: "Every night" }
+    ],
+    timeline: [
+      { period: "Trim 1", desc: "Ends look thicker and healthier immediately. Hair feels less fly-away." },
+      { period: "Month 2–3", desc: "Fewer new splits forming. Hair holds length better." },
+      { period: "Month 6+", desc: "Hair grows longer because the ends aren’t breaking off as fast as the roots grow." }
+    ],
+    closing: "Most people ‘feel’ their hair stops growing — what’s actually happening is the ends break off as fast as the roots grow. Trim consistently. Your hair will literally grow longer.",
+    severe: false
+  }
+];
+
+// ── Default category for existing items (everything without one is skin) ──
+ingredients.forEach(i => { if (!i.category) i.category = 'skin'; });
+concerns.forEach(c => { if (!c.category) c.category = 'skin'; });
+
+// ── Variant: hair-only ──
+const VARIANT = 'hair';
+ingredients = ingredients.filter(i => i.category === VARIANT);
+concerns = concerns.filter(c => c.category === VARIANT);
+
+// ── State ──
+let activeTab = 'concerns'; // Hair users typically come for a concern
+let activeMode = 'hair';
+let activeIndex = null;
+let userProfile = null; // { name, phone, country, hairType, hairConcern }
+
+// ── Onboarding state ──
+const onboardState = {
+  step: 0,
+  totalSteps: 4,
+  hairType: null,
+  hairConcern: null,
+};
+
+const PROFILE_KEY = 'barelabel_hair_profile_v1';
+
+function loadProfile() {
+  try {
+    const raw = localStorage.getItem(PROFILE_KEY);
+    if (!raw) return null;
+    return JSON.parse(raw);
+  } catch (e) { return null; }
+}
+
+function saveProfile(p) {
+  try { localStorage.setItem(PROFILE_KEY, JSON.stringify(p)); } catch (e) {}
+}
+
+// ── Onboarding flow ──
+function showOnboardScreen(n) {
+  onboardState.step = n;
+  document.querySelectorAll('.onboard-screen').forEach(s => {
+    s.classList.toggle('active', parseInt(s.dataset.screen) === n);
+  });
+  document.querySelectorAll('.onboard-progress-dot').forEach((d, i) => {
+    d.classList.toggle('current', i === n);
+    d.classList.toggle('done', i < n);
+  });
+}
+
+function onboardNext() {
+  if (onboardState.step < onboardState.totalSteps - 1) {
+    showOnboardScreen(onboardState.step + 1);
+  }
+}
+
+function onboardBack() {
+  if (onboardState.step > 0) {
+    showOnboardScreen(onboardState.step - 1);
+  }
+}
+
+function onboardSubmitContact() {
+  const name = document.getElementById('onboardName').value.trim();
+  const phone = document.getElementById('onboardPhone').value.trim();
+  const country = document.getElementById('onboardCountry').value;
+  const err = document.getElementById('onboardError');
+
+  if (!name) { err.textContent = 'Please tell us your name.'; err.classList.add('show'); return; }
+  if (!phone || !/^[0-9]{6,15}$/.test(phone)) {
+    err.textContent = 'Please enter a valid phone number (digits only).';
+    err.classList.add('show'); return;
+  }
+  err.classList.remove('show');
+
+  onboardState.name = name;
+  onboardState.phone = phone;
+  onboardState.country = country;
+
+  // Track contact captured (Mixpanel hooks attach later)
+  if (typeof trackEvent === 'function') {
+    trackEvent('onboarding_contact_captured', { name, phone: country + phone });
+  }
+
+  onboardNext();
+}
+
+function setupOnboardOption(containerId, key, btnId) {
+  const container = document.getElementById(containerId);
+  container.querySelectorAll('.onboard-option').forEach(opt => {
+    opt.addEventListener('click', () => {
+      container.querySelectorAll('.onboard-option').forEach(o => o.classList.remove('selected'));
+      opt.classList.add('selected');
+      onboardState[key] = opt.dataset.value;
+      document.getElementById(btnId).disabled = false;
+    });
+  });
+}
+
+function onboardFinish() {
+  userProfile = {
+    name: onboardState.name,
+    phone: onboardState.phone,
+    country: onboardState.country,
+    hairType: onboardState.hairType,
+    hairConcern: onboardState.hairConcern,
+    createdAt: new Date().toISOString(),
+  };
+  saveProfile(userProfile);
+
+  if (typeof trackEvent === 'function') {
+    trackEvent('onboarding_completed', userProfile);
+  }
+
+  const overlay = document.getElementById('onboard');
+  overlay.classList.add('hiding');
+  setTimeout(() => overlay.classList.add('hidden'), 400);
+
+  // Default to concerns tab if they have a hair concern
+  if (userProfile.hairConcern && userProfile.hairConcern !== 'none') {
+    activeTab = 'concerns';
+  } else {
+    activeTab = 'ingredients';
+  }
+
+  applyUserProfile();
+}
+
+function resetOnboarding() {
+  if (!confirm('Re-do your personalization quiz? Your existing answers will be replaced.')) return;
+  localStorage.removeItem(PROFILE_KEY);
+  location.reload();
+}
+
+function applyUserProfile() {
+  if (!userProfile) return;
+  const firstName = userProfile.name.split(' ')[0];
+  document.getElementById('userFirstName').textContent = firstName;
+  const concernLabels = {
+    'hair-fall': 'hair fall',
+    'dandruff': 'dandruff',
+    'dry-frizz': 'dry frizz',
+    'oily-scalp': 'oily scalp',
+    'dullness': 'dullness',
+    'greying': 'greying',
+    'none': null,
+  };
+  const persona = [
+    userProfile.hairType ? `${userProfile.hairType} hair` : null,
+    userProfile.hairConcern ? concernLabels[userProfile.hairConcern] : null,
+  ].filter(Boolean).join(' · ');
+  document.getElementById('personaPills').textContent = persona || 'personalized';
+  document.getElementById('userSummary').style.display = 'flex';
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === activeTab));
+  renderList();
+}
+
+// ── Tabs ──
+function switchTab(tab) {
+  activeTab = tab;
+  deselectItem();
+  document.querySelectorAll('.tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.tab === tab);
+  });
+  document.getElementById('searchInput').value = '';
+  if (typeof trackEvent === 'function') trackEvent('tab_switched', { tab });
+  renderList();
+}
+
+function filterList() {
+  renderList();
+}
+
+// ── Personalization (hair-only) ──
+const concernIngredientMap = {
+  'hair-fall':   ['Rosemary Oil', 'Caffeine', 'Onion Oil', 'Castor Oil', 'Bhringraj Oil', 'Ketoconazole'],
+  'dandruff':    ['Ketoconazole', 'Tea Tree Oil'],
+  'dry-frizz':   ['Argan Oil', 'Coconut Oil'],
+  'oily-scalp':  ['Tea Tree Oil'],
+  'dullness':    ['Argan Oil'],
+  'greying':     ['Bhringraj Oil', 'Onion Oil'],
+};
+
+const concernNameMap = {
+  'hair-fall': 'Hair Fall / Thinning',
+  'dandruff': 'Dandruff',
+  'dry-frizz': 'Dry Frizzy Hair',
+  'oily-scalp': 'Oily Scalp',
+  'dullness': 'Dull Lifeless Hair',
+  'greying': 'Premature Greying',
+};
+
+function isRecommended(item) {
+  if (!userProfile || !userProfile.hairConcern) return false;
+  if (activeTab === 'ingredients') {
+    const list = concernIngredientMap[userProfile.hairConcern] || [];
+    return list.includes(item.name);
+  }
+  if (activeTab === 'concerns') {
+    return item.name === concernNameMap[userProfile.hairConcern];
+  }
+  return false;
+}
+
+function renderList() {
+  const q = document.getElementById('searchInput').value.toLowerCase().trim();
+  const scroll = document.getElementById('listScroll');
+  const allData = activeTab === 'ingredients' ? ingredients : concerns;
+
+  let filtered = allData.filter(item =>
+    item.name.toLowerCase().includes(q) ||
+    item.sub.toLowerCase().includes(q) ||
+    (item.aka && item.aka.toLowerCase().includes(q))
+  );
+
+  // Sort: recommended first, then alphabetical
+  filtered = filtered.slice().sort((a, b) => {
+    const ra = isRecommended(a) ? 0 : 1;
+    const rb = isRecommended(b) ? 0 : 1;
+    if (ra !== rb) return ra - rb;
+    return 0; // preserve insertion order otherwise
+  });
+
+  if (filtered.length === 0) {
+    scroll.innerHTML = '<div class="no-results">No results found. Try a different search.</div>';
+    return;
+  }
+
+  scroll.innerHTML = filtered.map(item => {
+    const realIndex = allData.indexOf(item);
+    const isActive = activeIndex === realIndex && activeTab === (activeTab);
+    const isConcern = activeTab === 'concerns';
+    const recBadge = isRecommended(item) ? '<span class="rec-badge">For you</span>' : '';
+    return `
+      <div class="list-item ${isActive ? 'active' : ''}" onclick="selectItem(${realIndex})">
+        <div class="list-dot ${isConcern ? 'concern' : ''}"></div>
+        <div class="list-info">
+          <div class="list-name">${item.name}${recBadge}</div>
+          <div class="list-sub">${item.sub}</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function selectItem(index) {
+  activeIndex = index;
+  document.getElementById('app').classList.add('has-selection');
+  renderList();
+  const data = activeTab === 'ingredients' ? ingredients : concerns;
+  const item = data[index];
+  if (activeTab === 'ingredients') {
+    renderIngredient(item);
+  } else {
+    renderConcern(item);
+  }
+  if (typeof trackEvent === 'function') {
+    trackEvent(activeTab === 'ingredients' ? 'ingredient_viewed' : 'concern_viewed', {
+      name: item.name, category: item.category, recommended: isRecommended(item)
+    });
+  }
+  if (window.innerWidth <= 768) {
+    setTimeout(() => {
+      document.getElementById('detailPanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 50);
+  }
+}
+
+function deselectItem() {
+  activeIndex = null;
+  document.getElementById('app').classList.remove('has-selection');
+  document.getElementById('detailPanel').innerHTML = '';
+  renderList();
+}
+
+function goBack() {
+  deselectItem();
+}
+
+function renderIngredient(item) {
+  const conflicts = item.dontMix.map(c => `<span class="conflict-tag">${c}</span>`).join('');
+  const pros = item.pros.map(p => `<span class="pill pro">${p}</span>`).join('');
+  const cons = item.cons.map(c => `<span class="pill con">${c}</span>`).join('');
+  const isHair = item.category === 'hair';
+  const label1 = isHair ? 'Strength' : 'Face %';
+  const label2 = isHair ? 'Apply to' : 'Body %';
+
+  document.getElementById('detailPanel').innerHTML = `
+    <div class="detail-content">
+      <button class="back-btn" onclick="goBack()">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"/></svg>
+        Back
+      </button>
+      <div class="detail-header">
+        <h2 class="detail-title">${item.name}</h2>
+        <p class="detail-aka">${item.aka}</p>
+      </div>
+
+      <div class="info-grid">
+        <div class="info-row"><div class="info-label">Type</div><div class="info-value">${item.type}</div></div>
+        <div class="info-row"><div class="info-label">Best for</div><div class="info-value">${item.bestFor}</div></div>
+        <div class="info-row"><div class="info-label">${label1}</div><div class="info-value">${item.facePct}</div></div>
+        <div class="info-row"><div class="info-label">${label2}</div><div class="info-value">${item.bodyPct}</div></div>
+        <div class="info-row"><div class="info-label">How often</div><div class="info-value">${item.howOften}</div></div>
+        <div class="info-row"><div class="info-label">Don\u2019t mix</div><div class="info-value">${conflicts}</div></div>
+      </div>
+
+      <h3 class="section-title">Best reviewed product</h3>
+      <div class="product-rec">
+        <div class="product-header">
+          <div class="product-name">${item.product}</div>
+          <button class="info-btn" onclick="this.closest('.product-rec').classList.toggle('expanded')" title="More info">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" width="18" height="18"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" d="M12 16v-4m0-3.5v-.01"/></svg>
+          </button>
+        </div>
+        <div class="product-details">
+          ${item.productReview ? `<div class="product-review">${item.productReview}</div>` : ''}
+          <div class="product-note">${item.productNote}</div>
+        </div>
+      </div>
+
+      <h3 class="section-title">Pros</h3>
+      <div class="pills">${pros}</div>
+
+      <h3 class="section-title" style="margin-top:18px;">Cons</h3>
+      <div class="pills">${cons}</div>
+
+      ${item.expect ? `
+      <div class="timeline ingredient-timeline" style="margin-top:20px;">
+        <div class="timeline-title">What to expect</div>
+        <div class="timeline-rows">
+          ${item.expect.map(t => `
+            <div class="timeline-row">
+              <span class="timeline-period">${t.period}</span>
+              <span class="timeline-desc">${t.desc}</span>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+      ` : ''}
+    </div>
+  `;
+}
+
+function renderConcern(item) {
+  const steps = item.routine.map((s, i) => `
+    <div class="routine-step">
+      <div class="step-top">
+        <div class="step-number">${i + 1}</div>
+        <div class="step-name">${s.step}</div>
+        <button class="info-btn small" onclick="this.closest('.routine-step').classList.toggle('expanded')" title="More info">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" width="16" height="16"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" d="M12 16v-4m0-3.5v-.01"/></svg>
+        </button>
+      </div>
+      <div class="step-why">${s.why}</div>
+      <div class="step-details">
+        <div class="step-product">${s.product}</div>
+        <div class="step-lookfor">${s.lookFor}</div>
+        <span class="step-freq">${s.freq}</span>
+      </div>
+    </div>
+  `).join('');
+
+  const tl = item.timeline.map(t => `
+    <div class="timeline-row">
+      <span class="timeline-period">${t.period}</span>
+      <span class="timeline-desc">${t.desc}</span>
+    </div>
+  `).join('');
+
+  const derm = item.dermNote
+    ? `<div class="derm-note"><strong>Worth seeing a dermatologist?</strong> ${item.dermNote}</div>`
+    : '';
+
+  document.getElementById('detailPanel').innerHTML = `
+    <div class="detail-content">
+      <button class="back-btn" onclick="goBack()">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"/></svg>
+        Back
+      </button>
+      <div class="detail-header">
+        <h2 class="detail-title">${item.name}</h2>
+        <p class="detail-aka">${item.aka}</p>
+      </div>
+      <p class="concern-desc">${item.desc}</p>
+
+      <h3 class="section-title">Your Routine</h3>
+      <div class="routine-container">
+        ${steps}
+      </div>
+
+      <div class="timeline">
+        <div class="timeline-title">What to expect</div>
+        <div class="timeline-rows">
+          ${tl}
+        </div>
+      </div>
+
+      <p class="closing-note">${item.closing}</p>
+      ${derm}
+    </div>
+  `;
+}
+
+// ── Init ──
+function init() {
+  setupOnboardOption('hairTypeOptions', 'hairType', 'hairTypeNext');
+  setupOnboardOption('hairConcernOptions', 'hairConcern', 'hairConcernNext');
+
+  userProfile = loadProfile();
+  if (userProfile) {
+    document.getElementById('onboard').classList.add('hidden');
+    if (userProfile.hairConcern && userProfile.hairConcern !== 'none') {
+      activeTab = 'concerns';
+    }
+    applyUserProfile();
+  } else {
+    showOnboardScreen(0);
+    if (typeof trackEvent === 'function') trackEvent('onboarding_started', {});
+  }
+
+  renderList();
+}
+
+init();
+</script>
+</body>
+</html>
